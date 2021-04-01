@@ -60,7 +60,34 @@ public class Simulation {
         double lambdaWs3 = simulation.getLambda("ws3.dat");
 
         double getVariate = simulation.getExponential(rand,lambdaWs1);
+
         System.out.println(getVariate);
         System.out.println(lambdaWs1);
+
+
+
+        Buffer bufferOne = new Buffer(); //buffer for inspector one and ws1
+        Buffer bufferTwo = new Buffer();
+        Buffer bufferThree = new Buffer();
+        Buffer bufferFour = new Buffer();
+        Buffer bufferFive = new Buffer();
+        
+
+        Workstation workstationOne = new Workstation();
+        Workstation workstationTwo = new Workstation();
+        Workstation workstationThree = new Workstation();
+
+        Inspector inspectorOne = new Inspector(bufferOne, 1); //handles component 1
+        Inspector inspectorTwoTwo = new Inspector(bufferThree, 2); //handles component 2
+        Inspector inspectorTwoThree = new Inspector(bufferFive, 3); //handles components 3
+
+        for(int i = 0; i < 10; i++){
+            for (int j = 0; j < 300; j++){
+
+                //create random component
+
+
+            }
+        }
     }
 }

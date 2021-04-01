@@ -4,9 +4,11 @@ public class Inspector{
     private ArrayList<Component> inventory;
     private boolean blocked;
     private int ID;
+    private ArrayList<Buffer> buffer;
 
-    public Inspector(boolean blocked, int ID){
+    public Inspector(ArrayList<Buffer> buffer, int ID){
+
+        this.buffer = buffer;
         this.ID = ID;
-        this.blocked = blocked;
     }
 }
