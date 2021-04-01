@@ -100,14 +100,14 @@ public class Simulation {
             workstationThree.start();
 
 
-          //  for (int j = 0; j < 300; j++){
+            for (int j = 0; j < 300; j++){
 
                 //create random component
 
                 Component component = new Component(Type.C1);
                 inspectorOne.setComponent(component);
 
-            //}
+            }
        // }
     }
 }
