@@ -15,8 +15,12 @@ public class Simulation {
     private ArrayList<ArrayList<Double>> ws2 = new ArrayList<ArrayList<Double>>();
     private ArrayList<ArrayList<Double>> ws3 = new ArrayList<ArrayList<Double>>();
 
-    //Dont' want to use nextDouble
-    public double getExponential(Random random, Double lambda) {
+    private ArrayList<ArrayList<Double>> throughPut = new ArrayList<ArrayList<Double>>();
+
+    public double getExponential(Double lambda) {
+
+        Random random = new Random();
+
         return Math.log(1-random.nextDouble())/(-lambda);
     }
 
@@ -60,13 +64,6 @@ public class Simulation {
         double lambdaWs2 = simulation.getLambda("ws2.dat");
         double lambdaWs3 = simulation.getLambda("ws3.dat");
 
-        double getVariate = simulation.getExponential(rand,lambdaWs1);
-
-        System.out.println("Inspector 1 serving lamba is" + lambdaSP1);
-        System.out.println(getVariate);
-        System.out.println(lambdaWs1);
-
-
         ArrayList<Buffer> inspectorOneBuffers = new ArrayList<>();
         ArrayList<Buffer> inspectorTwoBuffers = new ArrayList<>();
 
@@ -76,19 +73,19 @@ public class Simulation {
         Buffer bufferTwoTwo = new Buffer();
         Buffer bufferTwoThree = new Buffer();
 
-        Workstation workstationOne = new Workstation(bufferOne, null);
-        Workstation workstationTwo = new Workstation(bufferOneTwo, bufferTwoTwo);
-        Workstation workstationThree = new Workstation(bufferOneThree, bufferTwoThree);
+        Workstation workstationOne = new Workstation(bufferOne, null, simulation, lambdaWs1);
+        Workstation workstationTwo = new Workstation(bufferOneTwo, bufferTwoTwo, simulation, lambdaWs2);
+        Workstation workstationThree = new Workstation(bufferOneThree, bufferTwoThree, simulation, lambdaWs3);
 
-        Inspector inspectorOne = new Inspector(inspectorOneBuffers, 1, lambdaSP1); //handles component 1
-        Inspector inspectorTwoTwo = new InspectorTwo(inspectorTwoBuffers, 2, lambdaSP22, lambdaSP23); //handles component 2
-        //Inspector inspectorTwoThree = new Inspector(bufferFive, 3); //handles components 3
+        Inspector inspectorOne = new Inspector(inspectorOneBuffers, 1, lambdaSP1, simulation); //handles component 1
+        Inspector inspectorTwo = new Inspector(inspectorTwoBuffers, 2, lambdaSP22, lambdaSP23, simulation);
+        //handles component 2
 
+        //create a random component and give it to an inspector
         for(int i = 0; i < 10; i++){
             for (int j = 0; j < 300; j++){
 
                 //create random component
-
 
             }
         }

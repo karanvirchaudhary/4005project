@@ -19,7 +19,6 @@ public class Buffer{
                 e.printStackTrace();
             }
         }
-
         components.add(component);
         isEmpty = false;
         notifyAll();
@@ -37,13 +36,10 @@ public class Buffer{
         }
 
         Component component = components.pop();
-
         if(components.size() == 0){
             isEmpty = true;
         }
-
         notifyAll();
-
         return component;
     }
 

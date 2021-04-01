@@ -5,4 +5,8 @@ public class Component{
         this.componentType = theType;
     }
 
+    public Type getComponentType(){
+        return componentType;
+    }
+
 }
