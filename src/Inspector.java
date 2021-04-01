@@ -5,9 +5,9 @@ public class Inspector extends Thread{
     private boolean blocked;
     private int ID;
     private ArrayList<Buffer> buffer;
+    private double lambdaValue;
 
     public Inspector(ArrayList<Buffer> buffer, int ID){
-
         this.buffer = buffer;
         this.ID = ID;
     }
