@@ -65,6 +65,7 @@ public class Simulation {
         double lambdaWs3 = simulation.getLambda("ws3.dat");
 
         ArrayList<Buffer> inspectorOneBuffers = new ArrayList<>();
+
         ArrayList<Buffer> inspectorTwoBuffers = new ArrayList<>();
 
         Buffer bufferOne = new Buffer(); //buffer for inspector one and ws1
@@ -72,6 +73,13 @@ public class Simulation {
         Buffer bufferOneThree = new Buffer();
         Buffer bufferTwoTwo = new Buffer();
         Buffer bufferTwoThree = new Buffer();
+
+        inspectorOneBuffers.add(bufferOne);
+        inspectorOneBuffers.add(bufferOneTwo);
+        inspectorOneBuffers.add(bufferOneThree);
+
+        inspectorTwoBuffers.add(bufferTwoTwo);
+        inspectorTwoBuffers.add(bufferTwoThree);
 
         Workstation workstationOne = new Workstation(bufferOne, null, simulation, lambdaWs1);
         Workstation workstationTwo = new Workstation(bufferOneTwo, bufferTwoTwo, simulation, lambdaWs2);
@@ -83,9 +91,21 @@ public class Simulation {
 
         //create a random component and give it to an inspector
         for(int i = 0; i < 10; i++){
+
+            inspectorOne.start();
+            inspectorTwo.start();
+
+            workstationOne.start();
+            workstationTwo.start();
+            workstationThree.start();
+
+
             for (int j = 0; j < 300; j++){
 
                 //create random component
+
+                Component component = new Component(Type.C1);
+                inspectorOne.setComponent(component);
 
             }
         }

@@ -16,6 +16,8 @@ public class Inspector extends Thread {
     private double lambdaValueTwo = 0;
     private Simulation simulation;
 
+    private int run;
+
     private Component component; //current component being handled
 
     public Inspector(ArrayList<Buffer> buffer, int ID, double lambda, Simulation simulation) {
@@ -39,7 +41,7 @@ public class Inspector extends Thread {
 
     public void run() {
 
-        while (true) {
+        while (run < 300) {
 
             //don't proceed until this inspector has a component
             while (component == null) {
@@ -64,10 +66,19 @@ public class Inspector extends Thread {
             }
 
             //for each buffer this inspector has access to add the component to it
-            buffer.forEach((temp) -> {
-                temp.put(component);
-                System.out.println("put into buffer");
-            });
+            for(Buffer temp: buffer){
+                if(temp.getSpace()){
+                    //has space to add
+                    temp.put(component);
+                    System.out.println("put into buffer");
+                    break;
+                } else {
+                    System.out.println("this buffer is full");
+                }
+            }
+
+            component = null;
+            run++;
 
         }
 

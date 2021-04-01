@@ -6,6 +6,9 @@ public class Workstation extends Thread{
     private Simulation simulation;
     private double lambda;
 
+    //only 300 runs
+    private int run = 0;
+
     public Workstation(Buffer buffer1, Buffer buffer2, Simulation simulation, Double lambda){
         this.buffer1 = buffer1;
         this.buffer2 = buffer2;
@@ -20,15 +23,19 @@ public class Workstation extends Thread{
      */
     public void run(){
 
-        while (true){
+        while (run < 300){
+
+
 
             //this is workstation 1
             if(buffer2 == null){
                 Component component = buffer1.take();
             } else {
-                //WS2
+                //WS2 and 3
                 Component componentOne = buffer1.take();
                 Component componentTwo = buffer2.take();
+
+                //only when one item from both are taken can the program continue
             }
 
             double sleepTime = simulation.getExponential(lambda);
@@ -40,7 +47,7 @@ public class Workstation extends Thread{
                 System.exit(1);
             }
 
-
+            run ++;
         }
 
     }
