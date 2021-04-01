@@ -67,6 +67,7 @@ public class Simulation {
 
 
         ArrayList<Buffer> inspectorOneBuffers = new ArrayList<>();
+        ArrayList<Buffer> inspectorTwoBuffers = new ArrayList<>();
 
         Buffer bufferOne = new Buffer(); //buffer for inspector one and ws1
         Buffer bufferOneTwo = new Buffer();
@@ -74,13 +75,13 @@ public class Simulation {
         Buffer bufferTwoTwo = new Buffer();
         Buffer bufferTwoThree = new Buffer();
 
-        Workstation workstationOne = new Workstation();
-        Workstation workstationTwo = new Workstation();
-        Workstation workstationThree = new Workstation();
+        Workstation workstationOne = new Workstation(bufferOne, null);
+        Workstation workstationTwo = new Workstation(bufferOneTwo, bufferTwoTwo);
+        Workstation workstationThree = new Workstation(bufferOneThree, bufferTwoThree);
 
-        Inspector inspectorOne = new Inspector(bufferOne, 1); //handles component 1
-        Inspector inspectorTwoTwo = new Inspector(bufferThree, 2); //handles component 2
-        Inspector inspectorTwoThree = new Inspector(bufferFive, 3); //handles components 3
+        Inspector inspectorOne = new Inspector(inspectorOneBuffers, 1); //handles component 1
+        Inspector inspectorTwoTwo = new Inspector(inspectorTwoBuffers, 2); //handles component 2
+        //Inspector inspectorTwoThree = new Inspector(bufferFive, 3); //handles components 3
 
         for(int i = 0; i < 10; i++){
             for (int j = 0; j < 300; j++){
