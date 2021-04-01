@@ -15,6 +15,7 @@ public class Simulation {
     private ArrayList<ArrayList<Double>> ws2 = new ArrayList<ArrayList<Double>>();
     private ArrayList<ArrayList<Double>> ws3 = new ArrayList<ArrayList<Double>>();
 
+    //Dont' want to use nextDouble
     public double getExponential(Random random, Double lambda) {
         return Math.log(1-random.nextDouble())/(-lambda);
     }
@@ -65,13 +66,13 @@ public class Simulation {
         System.out.println(lambdaWs1);
 
 
-        ArrayList<Buffer> inspectrOneBuffers = new ArrayList<>();
+        ArrayList<Buffer> inspectorOneBuffers = new ArrayList<>();
 
         Buffer bufferOne = new Buffer(); //buffer for inspector one and ws1
-        Buffer bufferTwo = new Buffer();
-        Buffer bufferThree = new Buffer();
-        Buffer bufferFour = new Buffer();
-        Buffer bufferFive = new Buffer();
+        Buffer bufferOneTwo = new Buffer();
+        Buffer bufferOneThree = new Buffer();
+        Buffer bufferTwoTwo = new Buffer();
+        Buffer bufferTwoThree = new Buffer();
 
         Workstation workstationOne = new Workstation();
         Workstation workstationTwo = new Workstation();
