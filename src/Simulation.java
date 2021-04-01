@@ -52,9 +52,9 @@ public class Simulation {
         Simulation simulation = new Simulation();
         Random rand = new Random();
 
-        double lambdaSP1 = simulation.getLambda("servinsp1.dat");
-        double lambdaSP22 = simulation.getLambda("servinsp22.dat");
-        double lambdaSP23 = simulation.getLambda("servinsp23.dat");
+        double lambdaSP1 = simulation.getLambda("servinsp1.dat"); //Inspector 1 serving time
+        double lambdaSP22 = simulation.getLambda("servinsp22.dat"); //Inspector 2 serving time for component 2
+        double lambdaSP23 = simulation.getLambda("servinsp23.dat"); //Inspector 2 serving time for component 3
 
         double lambdaWs1 = simulation.getLambda("ws1.dat");
         double lambdaWs2 = simulation.getLambda("ws2.dat");
@@ -62,6 +62,7 @@ public class Simulation {
 
         double getVariate = simulation.getExponential(rand,lambdaWs1);
 
+        System.out.println("Inspector 1 serving lamba is" + lambdaSP1);
         System.out.println(getVariate);
         System.out.println(lambdaWs1);
 
@@ -79,8 +80,8 @@ public class Simulation {
         Workstation workstationTwo = new Workstation(bufferOneTwo, bufferTwoTwo);
         Workstation workstationThree = new Workstation(bufferOneThree, bufferTwoThree);
 
-        Inspector inspectorOne = new Inspector(inspectorOneBuffers, 1); //handles component 1
-        Inspector inspectorTwoTwo = new Inspector(inspectorTwoBuffers, 2); //handles component 2
+        Inspector inspectorOne = new Inspector(inspectorOneBuffers, 1, lambdaSP1); //handles component 1
+        Inspector inspectorTwoTwo = new InspectorTwo(inspectorTwoBuffers, 2, lambdaSP22, lambdaSP23); //handles component 2
         //Inspector inspectorTwoThree = new Inspector(bufferFive, 3); //handles components 3
 
         for(int i = 0; i < 10; i++){
