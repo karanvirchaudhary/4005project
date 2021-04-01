@@ -45,7 +45,7 @@ public class Inspector extends Thread {
 
             //don't proceed until this inspector has a component
             while (component == null) {
-                System.out.println("waiting for component");
+                //just hold on here
             }
 
             double sleepTime = 0;

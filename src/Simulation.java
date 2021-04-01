@@ -90,7 +90,7 @@ public class Simulation {
         //handles component 2
 
         //create a random component and give it to an inspector
-        for(int i = 0; i < 10; i++){
+        //for(int i = 0; i < 10; i++){
 
             inspectorOne.start();
             inspectorTwo.start();
@@ -100,14 +100,14 @@ public class Simulation {
             workstationThree.start();
 
 
-            for (int j = 0; j < 300; j++){
+          //  for (int j = 0; j < 300; j++){
 
                 //create random component
 
                 Component component = new Component(Type.C1);
                 inspectorOne.setComponent(component);
 
-            }
-        }
+            //}
+       // }
     }
 }
