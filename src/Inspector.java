@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class Inspector{
+public class Inspector extends Thread{
     private ArrayList<Component> inventory;
     private boolean blocked;
     private int ID;
