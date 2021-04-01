@@ -44,12 +44,12 @@ public class Simulation {
         return lambda;
     }
 
-    public Simulation(){
-    }
+    public Simulation(){}
 
     public static void main(String[] args) throws FileNotFoundException {
 
         Simulation simulation = new Simulation();
+        Random rand = new Random();
 
         double lambdaSP1 = simulation.getLambda("servinsp1.dat");
         double lambdaSP22 = simulation.getLambda("servinsp22.dat");
@@ -59,7 +59,8 @@ public class Simulation {
         double lambdaWs2 = simulation.getLambda("ws2.dat");
         double lambdaWs3 = simulation.getLambda("ws3.dat");
 
-
-
+        double getVariate = simulation.getExponential(rand,lambdaWs1);
+        System.out.println(getVariate);
+        System.out.println(lambdaWs1);
     }
 }
