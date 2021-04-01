@@ -35,27 +35,46 @@ public class Inspector extends Thread {
         this.lambdaValueTwo = lambdaTwo;
     }
 
+
     public void setComponent(Component component) {
         this.component = component;
     }
 
+    public Component getComponent(){
+        return component;
+    }
+
+    /**
+     * Inspectors are gonna create their own components
+     */
     public void run() {
 
-        while (run < 300) {
+        //generate 300 components
+        while (run < 3) {
 
-            //don't proceed until this inspector has a component
-            while (component == null) {
-                //just hold on here
-            }
-
-            double sleepTime = 0;
-            //first inspector or second inspector
-            if (component.getComponentType() == Type.C1 || component.getComponentType() == Type.C2) {
-                sleepTime = simulation.getExponential(lambdaValueOne);
+            if(ID == 1){ //only for inspector 1
+                component = new Component(Type.C1);
             } else {
+                component = new Component(Type.getRandomType()); //generate a random component
 
-                //only second inspector has access to C3
+                //no use for C1 if we are inspector 2
+                while (component.getComponentType() == Type.C1){
+                    component = new Component(Type.getRandomType()); //generate a random component
+
+                }
+
+            }
+            double sleepTime = 0;
+
+            //component is c1 and this inspector is inspector 1
+            if(component.getComponentType() == Type.C1 && ID == 1){
+                sleepTime = simulation.getExponential(lambdaValueOne);
+            } else if(component.getComponentType() == Type.C2 && ID == 2){
+                sleepTime = simulation.getExponential(lambdaValueOne);
+            } else if (component.getComponentType() == Type.C3 && ID == 2){
                 sleepTime = simulation.getExponential(lambdaValueTwo);
+            } else {
+                System.out.println("Error");
             }
 
             try {
@@ -67,17 +86,15 @@ public class Inspector extends Thread {
 
             //for each buffer this inspector has access to add the component to it
             for(Buffer temp: buffer){
-                if(temp.getSpace()){
-                    //has space to add
+                if(temp.getSpace() && (temp.getBufferComponentType() == component.getComponentType())){
+                    //has space to add and is the correct buffer
                     temp.put(component);
                     System.out.println("put into buffer");
                     break;
                 } else {
-                    System.out.println("this buffer is full");
+                    System.out.println("this buffer is full or its the wrong buffer");
                 }
             }
-
-            component = null;
             run++;
 
         }

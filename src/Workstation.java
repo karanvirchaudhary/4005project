@@ -23,7 +23,7 @@ public class Workstation extends Thread{
      */
     public void run(){
 
-        while (run < 300){
+        while (run < 3){
 
 
 

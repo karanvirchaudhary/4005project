@@ -21,11 +21,12 @@ public class Simulation {
 
         Random random = new Random();
 
-        return Math.log(1-random.nextDouble())/(-lambda);
+        return Math.log(1 - random.nextDouble()) / (-lambda);
     }
 
     /**
      * Specifically for the files
+     *
      * @param fileName file name
      * @throws FileNotFoundException
      */
@@ -35,21 +36,22 @@ public class Simulation {
         File file = new File("./src/data/" + fileName);
 
         Scanner scanner = new Scanner(file);
-        while(scanner.hasNextLine()){
+        while (scanner.hasNextLine()) {
             String line = scanner.nextLine();
-            if(line.length() < 2) {
+            if (line.length() < 2) {
                 continue;
             }
             sum += Double.parseDouble(line);
         }
 
         double mean = sum / 300;
-        double lambda = 1 /mean;
+        double lambda = 1 / mean;
 
         return lambda;
     }
 
-    public Simulation(){}
+    public Simulation() {
+    }
 
     public static void main(String[] args) throws FileNotFoundException {
 
@@ -68,11 +70,12 @@ public class Simulation {
 
         ArrayList<Buffer> inspectorTwoBuffers = new ArrayList<>();
 
-        Buffer bufferOne = new Buffer(); //buffer for inspector one and ws1
-        Buffer bufferOneTwo = new Buffer();
-        Buffer bufferOneThree = new Buffer();
-        Buffer bufferTwoTwo = new Buffer();
-        Buffer bufferTwoThree = new Buffer();
+        Buffer bufferOne = new Buffer(Type.C1); //buffer for inspector one and ws1
+        Buffer bufferOneTwo = new Buffer(Type.C1);
+        Buffer bufferOneThree = new Buffer(Type.C1);
+
+        Buffer bufferTwoTwo = new Buffer(Type.C2);
+        Buffer bufferTwoThree = new Buffer(Type.C3);
 
         inspectorOneBuffers.add(bufferOne);
         inspectorOneBuffers.add(bufferOneTwo);
@@ -87,27 +90,15 @@ public class Simulation {
 
         Inspector inspectorOne = new Inspector(inspectorOneBuffers, 1, lambdaSP1, simulation); //handles component 1
         Inspector inspectorTwo = new Inspector(inspectorTwoBuffers, 2, lambdaSP22, lambdaSP23, simulation);
-        //handles component 2
 
-        //create a random component and give it to an inspector
-        //for(int i = 0; i < 10; i++){
+        inspectorOne.start();
+        inspectorTwo.start();
 
-            inspectorOne.start();
-            inspectorTwo.start();
-
-            workstationOne.start();
-            workstationTwo.start();
-            workstationThree.start();
+        workstationOne.start();
+        workstationTwo.start();
+        workstationThree.start();
 
 
-            for (int j = 0; j < 300; j++){
 
-                //create random component
-
-                Component component = new Component(Type.C1);
-                inspectorOne.setComponent(component);
-
-            }
-       // }
     }
 }

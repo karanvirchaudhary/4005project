@@ -4,15 +4,22 @@ public class Buffer{
 
     Stack<Component> components;
     private boolean hasSpace = true;
+    private Type bufferType;
 
-    public Buffer(){
+    public Buffer(Type type){
         components = new Stack<Component>();
+        this.bufferType = type;
     }
 
     public synchronized boolean getSpace(){
 
+        notifyAll();
         return components.size() != 2;
 
+    }
+
+    public Type getBufferComponentType(){
+        return bufferType;
     }
 
     public synchronized void put(Component component){
