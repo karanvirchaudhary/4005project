@@ -12,10 +12,12 @@ public class Buffer{
     }
 
     public synchronized boolean getSpace(){
-
         notifyAll();
         return components.size() != 2;
+    }
 
+    public synchronized int getSize(){
+        return components.size();
     }
 
     public Type getBufferComponentType(){

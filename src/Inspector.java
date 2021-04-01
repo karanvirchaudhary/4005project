@@ -50,7 +50,7 @@ public class Inspector extends Thread {
     public void run() {
 
         //generate 300 components
-        while (run < 3) {
+        while (run < 4) {
 
             if(ID == 1){ //only for inspector 1
                 component = new Component(Type.C1);
@@ -86,13 +86,22 @@ public class Inspector extends Thread {
 
             //for each buffer this inspector has access to add the component to it
             for(Buffer temp: buffer){
-                if(temp.getSpace() && (temp.getBufferComponentType() == component.getComponentType())){
+                if(temp.getBufferComponentType() == component.getComponentType()){
                     //has space to add and is the correct buffer
-                    temp.put(component);
+
+                    if(temp.getSize() == 0){
+                        temp.put(component);
+                    } else if(temp.getSize() == 1) {
+                        temp.put(component);
+                    } else {
+                        System.out.println("This buffer is full");
+                        continue; //buffer is full
+                    }
+
                     System.out.println("put into buffer");
                     break;
                 } else {
-                    System.out.println("this buffer is full or its the wrong buffer");
+                    System.out.println("wrong buffer");
                 }
             }
             run++;

@@ -33,6 +33,11 @@ public class Workstation extends Thread{
                 System.out.println("Took from buffer");
             } else {
                 //WS2 and 3
+
+                //if you're WS2 buffer 1 just has component 1 in it and buffer 2 is just C2
+                //you need both
+
+                System.out.println("taking from buffer");
                 Component componentOne = buffer1.take();
                 Component componentTwo = buffer2.take();
 
