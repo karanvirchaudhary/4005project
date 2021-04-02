@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /*
@@ -40,7 +41,7 @@ public class Inspector extends Thread {
         this.component = component;
     }
 
-    public Component getComponent(){
+    public Component getComponent() {
         return component;
     }
 
@@ -52,13 +53,13 @@ public class Inspector extends Thread {
         //generate 300 components
         while (true) {
 
-            if(ID == 1){ //only for inspector 1
+            if (ID == 1) { //only for inspector 1
                 component = new Component(Type.C1);
             } else {
                 component = new Component(Type.getRandomType()); //generate a random component
 
                 //no use for C1 if we are inspector 2
-                while (component.getComponentType() == Type.C1){
+                while (component.getComponentType() == Type.C1) {
                     component = new Component(Type.getRandomType()); //generate a random component
 
                 }
@@ -67,11 +68,11 @@ public class Inspector extends Thread {
             double sleepTime = 0;
 
             //component is c1 and this inspector is inspector 1
-            if(component.getComponentType() == Type.C1 && ID == 1){
+            if (component.getComponentType() == Type.C1 && ID == 1) {
                 sleepTime = simulation.getExponential(lambdaValueOne);
-            } else if(component.getComponentType() == Type.C2 && ID == 2){
+            } else if (component.getComponentType() == Type.C2 && ID == 2) {
                 sleepTime = simulation.getExponential(lambdaValueOne);
-            } else if (component.getComponentType() == Type.C3 && ID == 2){
+            } else if (component.getComponentType() == Type.C3 && ID == 2) {
                 sleepTime = simulation.getExponential(lambdaValueTwo);
             } else {
                 System.out.println("Error");
@@ -86,47 +87,58 @@ public class Inspector extends Thread {
 
             //for each buffer this inspector has access to add the component to it
             int smallest = 0;
-            for(int i = 0; i < buffer.size(); i++){
-                if(buffer.get(i).getSize() <= smallest && (buffer.get(i).getBufferComponentType() == component.getComponentType())){
-                    smallest = buffer.get(i).getSize();
-                    System.out.println("adding to buffer");
-                    buffer.get(i).put(component); //smallest buffer
-                    break;
-                }
+
+
+            ArrayList<Integer> bufferLengths = new ArrayList<>();
+            for (int i = 0; i < buffer.size(); i++) {
+                bufferLengths.add(buffer.get(i).getSize());
             }
 
+            int index = getIndexOfMinArray(bufferLengths);
 
+            if (ID != 1) {
+                //specifically for Inspector 2
 
-            /**
-            for(int i = 0; i < buffer.size(); i++){
+                System.out.println("Inspector 2 putting " + component.getComponentType().toString() + " into buffer");
 
-                //get the smallest buffer that accepts this component type
+                if (buffer.get(index).getBufferComponentType() == component.getComponentType()) {
+                    buffer.get(index).put(component);
+                } else {
 
+                    if (index == 0) {
 
-
-                if(buffer.get(i).getBufferComponentType() == component.getComponentType()){
-                    //has space to add and is the correct buffer
-
-                    if(buffer.get(i).getSize() == 0){
-                        buffer.get(i).put(component);
-                    } else if(buffer.get(i).getSize() == 1) {
-                        buffer.get(i).put(component);
-                    } else {
-                        System.out.println("This buffer is full");
-                        continue; //buffer is full
+                        buffer.get(index + 1).put(component);
+                    } else if (index == 1) {
+                        buffer.get(0).put(component);
                     }
 
-                    System.out.println("put into buffer");
-                    break;
-                } else {
-                    System.out.println("wrong buffer");
                 }
+
+            } else {
+                System.out.println("Inspector 1 putting into buffer");
+                buffer.get(index).put(component);
             }
-             **/
             run++;
 
         }
 
     }
+
+    private int getIndexOfMinArray(ArrayList<Integer> array) {
+        if (array.size() == 0)
+            return -1;
+
+        int index = 0;
+        int min = array.get(index);
+
+        for (int i = 0; i < array.size(); i++) {
+            if (array.get(i) < min) {
+                min = array.get(i);
+                index = i;
+            }
+        }
+        return index;
+    }
+
 
 }

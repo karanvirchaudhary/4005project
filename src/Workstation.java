@@ -30,26 +30,26 @@ public class Workstation extends Thread{
             //this is workstation 1
             if(buffer2 == null){
                 Component component = buffer1.take();
-                System.out.println("Took from buffer");
+                System.out.println("inspector 1 taking from buffer");
             } else {
                 //WS2 and 3
 
                 //if you're WS2 buffer 1 just has component 1 in it and buffer 2 is just C2
                 //you need both
 
-                System.out.println("taking from buffer");
+
 
                 while(buffer1.getSize() == 0 && buffer2.getSize() == 0){
                     //just wait lol
                 }
 
-                if(buffer1.getSize() != 0){
+                if(buffer1.getSize() != 0 && buffer2.getSize() != 0){
+                    Component componentTwo = buffer2.take();
                     Component componentOne = buffer1.take();
+                    System.out.print("Workstation taking " + componentOne.getComponentType().toString() + " from buffer and");
+                    System.out.println("workstation taking " + componentTwo.getComponentType().toString() + " from buffer");
                 }
 
-                if(buffer2.getSize() != 0){
-                    Component componentTwo = buffer2.take();
-                }
 
                 //only when one item from both are taken can the program continue
             }
