@@ -36,7 +36,6 @@ public class Inspector extends Thread {
         this.lambdaValueTwo = lambdaTwo;
     }
 
-
     public void setComponent(Component component) {
         this.component = component;
     }
@@ -51,7 +50,7 @@ public class Inspector extends Thread {
     public void run() {
 
         //generate 300 components
-        while (true) {
+        while (run < 10) {
 
             if (ID == 1) { //only for inspector 1
                 component = new Component(Type.C1);
@@ -99,8 +98,12 @@ public class Inspector extends Thread {
             if (ID != 1) {
                 //specifically for Inspector 2
 
-                System.out.println("Inspector 2 putting " + component.getComponentType().toString() + " into buffer");
-
+                System.out.println("Inspector 2 putting " + component.getComponentType().toString() + " into buffer ");
+                if(index == 0){
+                    System.out.print("WS2 \n");
+                } else{
+                    System.out.print("WS3 \n");
+                }
                 if (buffer.get(index).getBufferComponentType() == component.getComponentType()) {
                     buffer.get(index).put(component);
                 } else {
@@ -115,13 +118,22 @@ public class Inspector extends Thread {
                 }
 
             } else {
-                System.out.println("Inspector 1 putting into buffer");
+                System.out.println("Inspector 1 putting into buffer ");
+                if(index == 0){
+                    System.out.print("WS1 \n");
+                } else if (index == 1){
+                    System.out.print("WS2 \n");
+                } else {
+                    System.out.print("WS3 \n");
+                }
+
                 buffer.get(index).put(component);
             }
             run++;
 
         }
 
+        System.out.println("Inspector 1 putting into buffer");
     }
 
     private int getIndexOfMinArray(ArrayList<Integer> array) {
