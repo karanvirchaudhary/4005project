@@ -50,7 +50,7 @@ public class Inspector extends Thread {
     public void run() {
 
         //generate 300 components
-        while (run < 10) {
+        while (true) {
 
             if (ID == 1) { //only for inspector 1
                 component = new Component(Type.C1);
@@ -98,27 +98,32 @@ public class Inspector extends Thread {
             if (ID != 1) {
                 //specifically for Inspector 2
 
-                System.out.println("Inspector 2 putting " + component.getComponentType().toString() + " into buffer ");
-                if(index == 0){
-                    System.out.print("WS2 \n");
-                } else{
-                    System.out.print("WS3 \n");
-                }
+
+                System.out.print("Inspector 2 putting " + component.getComponentType().toString() + " into buffer ");
                 if (buffer.get(index).getBufferComponentType() == component.getComponentType()) {
+
+                    if(index == 0){
+
+                        System.out.print("WS2 \n");
+                    } else{
+                        System.out.print("WS3 \n");
+                    }
+
                     buffer.get(index).put(component);
                 } else {
 
                     if (index == 0) {
-
+                        System.out.print("WS3 \n");
                         buffer.get(index + 1).put(component);
                     } else if (index == 1) {
+                        System.out.print("WS2 \n");
                         buffer.get(0).put(component);
                     }
 
                 }
 
             } else {
-                System.out.println("Inspector 1 putting into buffer ");
+                System.out.print("Inspector 1 putting into buffer ");
                 if(index == 0){
                     System.out.print("WS1 \n");
                 } else if (index == 1){
@@ -130,10 +135,10 @@ public class Inspector extends Thread {
                 buffer.get(index).put(component);
             }
             run++;
-
+            System.out.println(run);
         }
 
-        System.out.println("Inspector 1 putting into buffer");
+
     }
 
     private int getIndexOfMinArray(ArrayList<Integer> array) {

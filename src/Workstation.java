@@ -30,7 +30,7 @@ public class Workstation extends Thread{
             //this is workstation 1
             if(buffer2 == null){
                 Component component = buffer1.take();
-                System.out.println("inspector 1 taking from buffer");
+                System.out.println("Workstation 1 taking from buffer");
             } else {
                 //WS2 and 3
 

@@ -98,7 +98,5 @@ public class Simulation {
         workstationTwo.start();
         workstationThree.start();
 
-
-
     }
 }
