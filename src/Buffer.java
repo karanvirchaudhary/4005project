@@ -3,10 +3,25 @@ import java.util.Stack;
 public class Buffer{
 
     Stack<Component> components;
-    boolean isEmpty = true;
+    private boolean hasSpace = true;
+    private Type bufferType;
 
-    public Buffer(){
+    public Buffer(Type type){
         components = new Stack<Component>();
+        this.bufferType = type;
+    }
+
+    public synchronized boolean getSpace(){
+        notifyAll();
+        return components.size() != 2;
+    }
+
+    public synchronized int getSize(){
+        return components.size();
+    }
+
+    public Type getBufferComponentType(){
+        return bufferType;
     }
 
     public synchronized void put(Component component){
@@ -19,16 +34,21 @@ public class Buffer{
                 e.printStackTrace();
             }
         }
-
         components.add(component);
-        isEmpty = false;
+
+        //if it now has no space
+        if(components.size() == 2){
+            hasSpace = false;
+        }
+
         notifyAll();
 
     }
 
     public synchronized Component take(){
 
-        while (isEmpty){
+        //cant take if it is empty
+        while (components.size() == 0){
             try {
                 wait();
             } catch (InterruptedException e) {
@@ -37,13 +57,8 @@ public class Buffer{
         }
 
         Component component = components.pop();
-
-        if(components.size() == 0){
-            isEmpty = true;
-        }
-
+        hasSpace = true;
         notifyAll();
-
         return component;
     }
 

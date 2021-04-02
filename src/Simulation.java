@@ -15,13 +15,18 @@ public class Simulation {
     private ArrayList<ArrayList<Double>> ws2 = new ArrayList<ArrayList<Double>>();
     private ArrayList<ArrayList<Double>> ws3 = new ArrayList<ArrayList<Double>>();
 
-    //Dont' want to use nextDouble
-    public double getExponential(Random random, Double lambda) {
-        return Math.log(1-random.nextDouble())/(-lambda);
+    private ArrayList<ArrayList<Double>> throughPut = new ArrayList<ArrayList<Double>>();
+
+    public double getExponential(Double lambda) {
+
+        Random random = new Random();
+
+        return Math.log(1 - random.nextDouble()) / (-lambda);
     }
 
     /**
      * Specifically for the files
+     *
      * @param fileName file name
      * @throws FileNotFoundException
      */
@@ -31,21 +36,22 @@ public class Simulation {
         File file = new File("./src/data/" + fileName);
 
         Scanner scanner = new Scanner(file);
-        while(scanner.hasNextLine()){
+        while (scanner.hasNextLine()) {
             String line = scanner.nextLine();
-            if(line.length() < 2) {
+            if (line.length() < 2) {
                 continue;
             }
             sum += Double.parseDouble(line);
         }
 
         double mean = sum / 300;
-        double lambda = 1 /mean;
+        double lambda = 1 / mean;
 
         return lambda;
     }
 
-    public Simulation(){}
+    public Simulation() {
+    }
 
     public static void main(String[] args) throws FileNotFoundException {
 
@@ -60,37 +66,37 @@ public class Simulation {
         double lambdaWs2 = simulation.getLambda("ws2.dat");
         double lambdaWs3 = simulation.getLambda("ws3.dat");
 
-        double getVariate = simulation.getExponential(rand,lambdaWs1);
-
-        System.out.println("Inspector 1 serving lamba is" + lambdaSP1);
-        System.out.println(getVariate);
-        System.out.println(lambdaWs1);
-
-
         ArrayList<Buffer> inspectorOneBuffers = new ArrayList<>();
+
         ArrayList<Buffer> inspectorTwoBuffers = new ArrayList<>();
 
-        Buffer bufferOne = new Buffer(); //buffer for inspector one and ws1
-        Buffer bufferOneTwo = new Buffer();
-        Buffer bufferOneThree = new Buffer();
-        Buffer bufferTwoTwo = new Buffer();
-        Buffer bufferTwoThree = new Buffer();
+        Buffer bufferOne = new Buffer(Type.C1); //buffer for inspector one and ws1
+        Buffer bufferOneTwo = new Buffer(Type.C1);
+        Buffer bufferOneThree = new Buffer(Type.C1);
 
-        Workstation workstationOne = new Workstation(bufferOne, null);
-        Workstation workstationTwo = new Workstation(bufferOneTwo, bufferTwoTwo);
-        Workstation workstationThree = new Workstation(bufferOneThree, bufferTwoThree);
+        Buffer bufferTwoTwo = new Buffer(Type.C2);
+        Buffer bufferTwoThree = new Buffer(Type.C3);
 
-        Inspector inspectorOne = new Inspector(inspectorOneBuffers, 1, lambdaSP1); //handles component 1
-        Inspector inspectorTwoTwo = new InspectorTwo(inspectorTwoBuffers, 2, lambdaSP22, lambdaSP23); //handles component 2
-        //Inspector inspectorTwoThree = new Inspector(bufferFive, 3); //handles components 3
+        inspectorOneBuffers.add(bufferOne);
+        inspectorOneBuffers.add(bufferOneTwo);
+        inspectorOneBuffers.add(bufferOneThree);
 
-        for(int i = 0; i < 10; i++){
-            for (int j = 0; j < 300; j++){
+        inspectorTwoBuffers.add(bufferTwoTwo);
+        inspectorTwoBuffers.add(bufferTwoThree);
 
-                //create random component
+        Workstation workstationOne = new Workstation(bufferOne, null, simulation, lambdaWs1);
+        Workstation workstationTwo = new Workstation(bufferOneTwo, bufferTwoTwo, simulation, lambdaWs2);
+        Workstation workstationThree = new Workstation(bufferOneThree, bufferTwoThree, simulation, lambdaWs3);
 
+        Inspector inspectorOne = new Inspector(inspectorOneBuffers, 1, lambdaSP1, simulation); //handles component 1
+        Inspector inspectorTwo = new Inspector(inspectorTwoBuffers, 2, lambdaSP22, lambdaSP23, simulation);
 
-            }
-        }
+        inspectorOne.start();
+        inspectorTwo.start();
+
+        workstationOne.start();
+        workstationTwo.start();
+        workstationThree.start();
+
     }
 }
