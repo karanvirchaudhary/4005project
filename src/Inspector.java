@@ -85,14 +85,17 @@ public class Inspector extends Thread {
             }
 
             //for each buffer this inspector has access to add the component to it
-            for(Buffer temp: buffer){
-                if(temp.getBufferComponentType() == component.getComponentType()){
+            for(int i = 0; i < buffer.size(); i++){
+
+                //get the smallest buffer that accepts this component type
+
+                if(buffer.get(i).getBufferComponentType() == component.getComponentType()){
                     //has space to add and is the correct buffer
 
-                    if(temp.getSize() == 0){
-                        temp.put(component);
-                    } else if(temp.getSize() == 1) {
-                        temp.put(component);
+                    if(buffer.get(i).getSize() == 0){
+                        buffer.get(i).put(component);
+                    } else if(buffer.get(i).getSize() == 1) {
+                        buffer.get(i).put(component);
                     } else {
                         System.out.println("This buffer is full");
                         continue; //buffer is full

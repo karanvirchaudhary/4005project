@@ -38,8 +38,20 @@ public class Workstation extends Thread{
                 //you need both
 
                 System.out.println("taking from buffer");
-                Component componentOne = buffer1.take();
-                Component componentTwo = buffer2.take();
+
+                while(buffer1.getSize() == 0 && buffer2.getSize() == 0){
+                    //just wait lol
+                }
+
+                if(buffer1.getSize() != 0){
+                    Component componentOne = buffer1.take();
+                }
+
+                if(buffer2.getSize() != 0){
+                    Component componentTwo = buffer2.take();
+                }
+
+
 
                 //only when one item from both are taken can the program continue
             }
