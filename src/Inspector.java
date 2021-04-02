@@ -50,7 +50,7 @@ public class Inspector extends Thread {
     public void run() {
 
         //generate 300 components
-        while (run < 4) {
+        while (true) {
 
             if(ID == 1){ //only for inspector 1
                 component = new Component(Type.C1);
@@ -78,7 +78,7 @@ public class Inspector extends Thread {
             }
 
             try {
-                Thread.sleep((long) sleepTime);
+                Thread.sleep((long) sleepTime * 1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
                 System.exit(1);

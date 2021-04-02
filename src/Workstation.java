@@ -23,7 +23,7 @@ public class Workstation extends Thread{
      */
     public void run(){
 
-        while (run < 3){
+        while (true){
 
 
 
@@ -50,8 +50,6 @@ public class Workstation extends Thread{
                 if(buffer2.getSize() != 0){
                     Component componentTwo = buffer2.take();
                 }
-
-
 
                 //only when one item from both are taken can the program continue
             }
