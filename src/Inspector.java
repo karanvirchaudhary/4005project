@@ -85,9 +85,24 @@ public class Inspector extends Thread {
             }
 
             //for each buffer this inspector has access to add the component to it
+            int smallest = 0;
+            for(int i = 0; i < buffer.size(); i++){
+                if(buffer.get(i).getSize() <= smallest && (buffer.get(i).getBufferComponentType() == component.getComponentType())){
+                    smallest = buffer.get(i).getSize();
+                    System.out.println("adding to buffer");
+                    buffer.get(i).put(component); //smallest buffer
+                    break;
+                }
+            }
+
+
+
+            /**
             for(int i = 0; i < buffer.size(); i++){
 
                 //get the smallest buffer that accepts this component type
+
+
 
                 if(buffer.get(i).getBufferComponentType() == component.getComponentType()){
                     //has space to add and is the correct buffer
@@ -107,6 +122,7 @@ public class Inspector extends Thread {
                     System.out.println("wrong buffer");
                 }
             }
+             **/
             run++;
 
         }
