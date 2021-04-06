@@ -36,21 +36,10 @@ public class Workstation extends Thread{
 
                 //if you're WS2 buffer 1 just has component 1 in it and buffer 2 is just C2
                 //you need both
-
-
-
-                while(buffer1.getSize() == 0 && buffer2.getSize() == 0){
-                    //just wait lol
-                }
-
-                if(buffer1.getSize() != 0 && buffer2.getSize() != 0){
-                    Component componentTwo = buffer2.take();
-                    Component componentOne = buffer1.take();
-                    System.out.print("Workstation taking " + componentOne.getComponentType().toString() + " from buffer and");
-                    System.out.println("workstation taking " + componentTwo.getComponentType().toString() + " from buffer");
-                }
-
-
+                Component componentTwo = buffer2.take();
+                Component componentOne = buffer1.take();
+                System.out.println(this.getName() + " taking " + componentOne.getComponentType().toString() + " and " +
+                        componentTwo.getComponentType().toString() + " from buffer");
                 //only when one item from both are taken can the program continue
             }
 

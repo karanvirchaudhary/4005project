@@ -59,8 +59,7 @@ public class Inspector extends Thread {
 
                 //no use for C1 if we are inspector 2
                 while (component.getComponentType() == Type.C1) {
-                    component = new Component(Type.getRandomType()); //generate a random component
-
+                    component = new Component(Type.getRandomType()); //generate a random component if component is C1
                 }
 
             }
@@ -84,45 +83,42 @@ public class Inspector extends Thread {
                 System.exit(1);
             }
 
-            //for each buffer this inspector has access to add the component to it
-            int smallest = 0;
 
 
-            ArrayList<Integer> bufferLengths = new ArrayList<>();
-            for (int i = 0; i < buffer.size(); i++) {
-                bufferLengths.add(buffer.get(i).getSize());
-            }
 
-            int index = getIndexOfMinArray(bufferLengths);
 
             if (ID != 1) {
                 //specifically for Inspector 2
 
+                /**
+                 * Inspector 2 doesn't need to actually check for the smallest buffer, it just needs to put
+                 * the component in the right buffer
+                 */
 
-                System.out.print("Inspector 2 putting " + component.getComponentType().toString() + " into buffer ");
-                if (buffer.get(index).getBufferComponentType() == component.getComponentType()) {
-
-                    if(index == 0){
-
-                        System.out.print("WS2 \n");
-                    } else{
-                        System.out.print("WS3 \n");
+                //find the buffer with the right component type
+                for(Buffer b: buffer){
+                    if(b.getBufferComponentType() == component.getComponentType()){
+                        b.put(component);
+                        break;
                     }
-
-                    buffer.get(index).put(component);
-                } else {
-
-                    if (index == 0) {
-                        System.out.print("WS3 \n");
-                        buffer.get(index + 1).put(component);
-                    } else if (index == 1) {
-                        System.out.print("WS2 \n");
-                        buffer.get(0).put(component);
-                    }
-
                 }
+                System.out.print("Inspector 2 putting " + component.getComponentType().toString() + " into buffer ");
+
 
             } else {
+
+                /**
+                 * Inspector 1 has to place C1 into the smallest C1 buffer with the first buffer being the priority
+                 */
+
+                ArrayList<Integer> bufferLengths = new ArrayList<>();
+                for (int i = 0; i < buffer.size(); i++) {
+                    bufferLengths.add(buffer.get(i).getSize());
+                }
+
+                //get buffer with smallest size
+                int index = getIndexOfMinArray(bufferLengths);
+
                 System.out.print("Inspector 1 putting into buffer ");
                 if(index == 0){
                     System.out.print("WS1 \n");
@@ -135,7 +131,7 @@ public class Inspector extends Thread {
                 buffer.get(index).put(component);
             }
             run++;
-            System.out.println(run);
+            //System.out.println(run);
         }
 
 
@@ -156,6 +152,8 @@ public class Inspector extends Thread {
         }
         return index;
     }
+
+
 
 
 }

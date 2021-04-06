@@ -6,6 +6,34 @@ import java.util.Scanner;
 
 public class Simulation {
 
+    public ArrayList<ArrayList<Double>> getServinsp1() {
+        return servinsp1;
+    }
+
+    public ArrayList<ArrayList<Double>> getServinsp22() {
+        return servinsp22;
+    }
+
+    public ArrayList<ArrayList<Double>> getServinsp23() {
+        return servinsp23;
+    }
+
+    public ArrayList<ArrayList<Double>> getWs1() {
+        return ws1;
+    }
+
+    public ArrayList<ArrayList<Double>> getWs2() {
+        return ws2;
+    }
+
+    public ArrayList<ArrayList<Double>> getWs3() {
+        return ws3;
+    }
+
+    public ArrayList<ArrayList<Double>> getThroughPut() {
+        return throughPut;
+    }
+
     //10 replications with 300 items each
     private ArrayList<ArrayList<Double>> servinsp1 = new ArrayList<ArrayList<Double>>();
     private ArrayList<ArrayList<Double>> servinsp22 = new ArrayList<ArrayList<Double>>();
@@ -85,11 +113,16 @@ public class Simulation {
         inspectorTwoBuffers.add(bufferTwoThree);
 
         Workstation workstationOne = new Workstation(bufferOne, null, simulation, lambdaWs1);
+        workstationOne.setName("WS1");
         Workstation workstationTwo = new Workstation(bufferOneTwo, bufferTwoTwo, simulation, lambdaWs2);
+        workstationTwo.setName("WS2");
         Workstation workstationThree = new Workstation(bufferOneThree, bufferTwoThree, simulation, lambdaWs3);
+        workstationThree.setName("WS3");
 
         Inspector inspectorOne = new Inspector(inspectorOneBuffers, 1, lambdaSP1, simulation); //handles component 1
+        inspectorOne.setName("Inspector 1");
         Inspector inspectorTwo = new Inspector(inspectorTwoBuffers, 2, lambdaSP22, lambdaSP23, simulation);
+        inspectorTwo.setName("Inspector 2");
 
         inspectorOne.start();
         inspectorTwo.start();
