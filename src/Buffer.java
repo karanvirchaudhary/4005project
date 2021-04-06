@@ -31,7 +31,9 @@ public class Buffer{
             try {
                 wait();
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
+                System.out.println("Process interrupted");
+                return;
             }
         }
         components.add(component);
@@ -52,7 +54,8 @@ public class Buffer{
             try {
                 wait();
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                System.out.println("Process interrupted");
+                return null;
             }
         }
 

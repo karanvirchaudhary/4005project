@@ -5,15 +5,14 @@ public class Workstation extends Thread{
     private int ID;
     private Simulation simulation;
     private double lambda;
+    private boolean end;
 
-    //only 300 runs
-    private int run = 0;
-
-    public Workstation(Buffer buffer1, Buffer buffer2, Simulation simulation, Double lambda){
+    public Workstation(Buffer buffer1, Buffer buffer2, Simulation simulation, Double lambda, int id){
         this.buffer1 = buffer1;
         this.buffer2 = buffer2;
         this.simulation = simulation;
         this.lambda = lambda;
+        this.ID = id;
     }
 
     /**
@@ -23,10 +22,8 @@ public class Workstation extends Thread{
      */
     public void run(){
 
-        while (true){
-
-
-
+        long startTime = System.nanoTime();
+        while (!end){
             //this is workstation 1
             if(buffer2 == null){
                 Component component = buffer1.take();
@@ -36,27 +33,54 @@ public class Workstation extends Thread{
 
                 //if you're WS2 buffer 1 just has component 1 in it and buffer 2 is just C2
                 //you need both
+
+
+
                 Component componentTwo = buffer2.take();
                 Component componentOne = buffer1.take();
+
+                if(componentTwo == null || componentOne == null){
+                    //means that the program go interrupted
+                    end = true;
+                    return;
+                }
+
                 System.out.println(this.getName() + " taking " + componentOne.getComponentType().toString() + " and " +
                         componentTwo.getComponentType().toString() + " from buffer");
                 //only when one item from both are taken can the program continue
             }
+
 
             double sleepTime = simulation.getExponential(lambda);
 
             try {
                 Thread.sleep((long)sleepTime * 1000);
             } catch (InterruptedException e ) {
-                e.printStackTrace();
-                System.exit(1);
+                System.out.println(this.getName() + " interrupted");
+                end = true;
+                return;
             }
+        }
 
-            run ++;
+
+        long endTime = System.nanoTime();
+        long timeElapsed = endTime - startTime;
+        if(ID == 1){
+            simulation.getWs1().add(timeElapsed);
+        } else if(ID == 2){
+            simulation.getWs2().add(timeElapsed);
+        } else {
+            simulation.getWs3().add(timeElapsed);
         }
 
     }
 
 
+    public boolean isEnd() {
+        return end;
+    }
 
+    public void setEnd(boolean end) {
+        this.end = end;
+    }
 }

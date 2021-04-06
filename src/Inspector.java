@@ -10,13 +10,15 @@ import java.util.Random;
 public class Inspector extends Thread {
 
     private ArrayList<Component> inventory;
-    private boolean blocked;
     private int ID;
     private ArrayList<Buffer> buffer;
     private double lambdaValueOne = 0;
     private double lambdaValueTwo = 0;
     private Simulation simulation;
 
+
+
+    private boolean end = false;
     private int run;
 
     private Component component; //current component being handled
@@ -40,6 +42,14 @@ public class Inspector extends Thread {
         this.component = component;
     }
 
+    public boolean isEnd() {
+        return end;
+    }
+
+    public void setEnd(boolean end) {
+        this.end = end;
+    }
+
     public Component getComponent() {
         return component;
     }
@@ -49,9 +59,9 @@ public class Inspector extends Thread {
      */
     public void run() {
 
-        //generate 300 components
-        while (true) {
 
+        while (!end) {
+            long startTime = System.nanoTime();
             if (ID == 1) { //only for inspector 1
                 component = new Component(Type.C1);
             } else {
@@ -79,13 +89,10 @@ public class Inspector extends Thread {
             try {
                 Thread.sleep((long) sleepTime * 1000);
             } catch (InterruptedException e) {
-                e.printStackTrace();
-                System.exit(1);
+                System.out.println(this.getName() + " interrupted");
+                end = true;
+                return;
             }
-
-
-
-
 
             if (ID != 1) {
                 //specifically for Inspector 2
@@ -102,7 +109,7 @@ public class Inspector extends Thread {
                         break;
                     }
                 }
-                System.out.print("Inspector 2 putting " + component.getComponentType().toString() + " into buffer ");
+                System.out.println("Inspector 2 putting " + component.getComponentType().toString() + " into buffer ");
 
 
             } else {
@@ -130,8 +137,19 @@ public class Inspector extends Thread {
 
                 buffer.get(index).put(component);
             }
-            run++;
-            //System.out.println(run);
+
+            long endTime = System.nanoTime();
+            long timeElapsed = endTime - startTime; //time to create a component and place it
+
+            if(component.getComponentType() == Type.C1){
+                //inspector 1
+                simulation.getServinsp1().add(timeElapsed);
+            } else if(component.getComponentType() == Type.C2) {
+                simulation.getServinsp22().add(timeElapsed);
+            } else {
+                simulation.getServinsp23().add(timeElapsed);
+            }
+
         }
 
 
