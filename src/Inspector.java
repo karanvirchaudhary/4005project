@@ -15,7 +15,7 @@ public class Inspector extends Thread {
     private double lambdaValueOne = 0;
     private double lambdaValueTwo = 0;
     private Simulation simulation;
-
+    private long blockedTime = 0L;
 
 
     private boolean end = false;
@@ -59,9 +59,11 @@ public class Inspector extends Thread {
      */
     public void run() {
 
+        long startTimeTotal = System.nanoTime();
 
         while (!end) {
             long startTime = System.nanoTime();
+            //generating its own components
             if (ID == 1) { //only for inspector 1
                 component = new Component(Type.C1);
             } else {
@@ -73,8 +75,8 @@ public class Inspector extends Thread {
                 }
 
             }
-            double sleepTime = 0;
 
+            double sleepTime = 0;
             //component is c1 and this inspector is inspector 1
             if (component.getComponentType() == Type.C1 && ID == 1) {
                 sleepTime = simulation.getExponential(lambdaValueOne);
@@ -87,11 +89,11 @@ public class Inspector extends Thread {
             }
 
             try {
-                Thread.sleep((long) sleepTime * 1000);
+                Thread.sleep((long) sleepTime * 1000); //here to change scale
             } catch (InterruptedException e) {
                 System.out.println(this.getName() + " interrupted");
                 end = true;
-                return;
+                break;
             }
 
             if (ID != 1) {
@@ -105,7 +107,12 @@ public class Inspector extends Thread {
                 //find the buffer with the right component type
                 for(Buffer b: buffer){
                     if(b.getBufferComponentType() == component.getComponentType()){
-                        b.put(component);
+                        long time = b.put(component);
+
+                        if(time > 0){
+                            //simulation.getinspectorTwoBlocked().add(time);
+                            blockedTime += time;
+                        }
                         break;
                     }
                 }
@@ -135,7 +142,12 @@ public class Inspector extends Thread {
                     System.out.print("WS3 \n");
                 }
 
-                buffer.get(index).put(component);
+                long time = buffer.get(index).put(component);
+                if(time > 0){
+                    //simulation.getinspectorOneBlocked().add(time);
+                    blockedTime += time;
+                }
+
             }
 
             long endTime = System.nanoTime();
@@ -151,8 +163,17 @@ public class Inspector extends Thread {
             }
 
         }
+        long endTimeTotal = System.nanoTime();
 
+        long total = endTimeTotal - startTimeTotal;
 
+        double proportion = (double) (blockedTime / total);
+
+        if(ID == 1){
+            simulation.getinspectorOneBlocked().add(blockedTime);
+        } else {
+            simulation.getinspectorTwoBlocked().add(blockedTime);
+        }
     }
 
     private int getIndexOfMinArray(ArrayList<Integer> array) {

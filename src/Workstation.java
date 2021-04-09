@@ -34,8 +34,6 @@ public class Workstation extends Thread{
                 //if you're WS2 buffer 1 just has component 1 in it and buffer 2 is just C2
                 //you need both
 
-
-
                 Component componentTwo = buffer2.take();
                 Component componentOne = buffer1.take();
 
@@ -50,7 +48,6 @@ public class Workstation extends Thread{
                 //only when one item from both are taken can the program continue
             }
 
-
             double sleepTime = simulation.getExponential(lambda);
 
             try {
@@ -61,7 +58,6 @@ public class Workstation extends Thread{
                 return;
             }
         }
-
 
         long endTime = System.nanoTime();
         long timeElapsed = endTime - startTime;

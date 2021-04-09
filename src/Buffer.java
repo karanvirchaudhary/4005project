@@ -24,20 +24,29 @@ public class Buffer{
         return bufferType;
     }
 
-    public synchronized void put(Component component){
+    /**
+     * Put a component into the buffer, if the process that invokes this has to go into the wait then
+     * time the amount of time in wait
+     * @param component
+     */
+    public synchronized long put(Component component){
 
         //if its not full
+        long time = 0;
+        long start = 0;
         while (components.size() == 2){
+
             try {
+                start = System.nanoTime();
                 wait();
+                time = System.nanoTime() - start;
             } catch (InterruptedException e) {
                 //e.printStackTrace();
                 System.out.println("Process interrupted");
-                return;
+                return 0;
             }
         }
         components.add(component);
-
         //if it now has no space
         if(components.size() == 2){
             hasSpace = false;
@@ -45,6 +54,12 @@ public class Buffer{
 
         notifyAll();
 
+        if(time == 0){
+            //means that the program didn't wait
+            return 0;
+        } else {
+            return time;
+        }
     }
 
     public synchronized Component take(){

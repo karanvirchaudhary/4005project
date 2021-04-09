@@ -4,16 +4,16 @@ import java.util.*;
 
 public class Simulation {
 
-    private ArrayList<Long> servinsp1 = new ArrayList<Long>();
-    private ArrayList<Long> servinsp1Blocked = new ArrayList<Long>();
-    private ArrayList<Long> servinsp22 = new ArrayList<Long>();
-    private ArrayList<Long> servinsp22Blocked = new ArrayList<Long>();
-    private ArrayList<Long> servinsp23 = new ArrayList<Long>();
-    private ArrayList<Long> servinsp23Blocked = new ArrayList<Long>();
+    private  ArrayList<Long> servinsp1 = new ArrayList<Long>();
+    private  ArrayList<Long> inspectorOneBlocked = new ArrayList<Long>();
+    private  ArrayList<Long> servinsp22 = new ArrayList<Long>();
+    private  ArrayList<Long> inspectorTwoBlocked = new ArrayList<Long>();
+    private  ArrayList<Long> servinsp23 = new ArrayList<Long>();
+    private  ArrayList<Long> servinsp23Blocked = new ArrayList<Long>();
 
-    private ArrayList<Long> ws1 = new ArrayList<Long>();
-    private ArrayList<Long> ws2 = new ArrayList<Long>();
-    private ArrayList<Long> ws3 = new ArrayList<Long>();
+    private  ArrayList<Long> ws1 = new ArrayList<Long>();
+    private  ArrayList<Long> ws2 = new ArrayList<Long>();
+    private  ArrayList<Long> ws3 = new ArrayList<Long>();
 
     public double getExponential(Double lambda) {
 
@@ -54,16 +54,16 @@ public class Simulation {
         return servinsp1;
     }
 
-    public ArrayList<Long> getServinsp1Blocked() {
-        return servinsp1Blocked;
+    public ArrayList<Long> getinspectorOneBlocked() {
+        return inspectorOneBlocked;
     }
 
     public ArrayList<Long> getServinsp22() {
         return servinsp22;
     }
 
-    public ArrayList<Long> getServinsp22Blocked() {
-        return servinsp22Blocked;
+    public ArrayList<Long> getinspectorTwoBlocked() {
+        return inspectorTwoBlocked;
     }
 
     public ArrayList<Long> getServinsp23() {
@@ -90,35 +90,31 @@ public class Simulation {
     public static void main(String[] args) throws FileNotFoundException {
 
         Simulation simulation = new Simulation();
-
-
-
-
-
-
-        int iterations = 30;
+        int iterations = 3;
         int currentIteration = 0;
-        int simTimeMinutes = 1; //in minutes
+        int simTimeMinutes = 25; //in minutes
         int simTime = simTimeMinutes * 60000;
 
+        //collection for each repetition
         HashMap<Integer, Long> inspector1Performance = new HashMap<>();
+        HashMap<Integer, Long> inspector2Performance = new HashMap<>();
+        HashMap<Integer, Long> ws1Performance = new HashMap<>();
 
         System.out.println("SIMULATION STARTING FOR " + (simTimeMinutes * iterations) + " MINUTES.");
         System.out.println("==============================================================================");
 
+        double lambdaSP1 = simulation.getLambda("servinsp1.dat"); //Inspector 1 serving time
+        double lambdaSP22 = simulation.getLambda("servinsp22.dat"); //Inspector 2 serving time for component 2
+        double lambdaSP23 = simulation.getLambda("servinsp23.dat"); //Inspector 2 serving time for component 3
+
+        double lambdaWs1 = simulation.getLambda("ws1.dat");
+        double lambdaWs2 = simulation.getLambda("ws2.dat");
+        double lambdaWs3 = simulation.getLambda("ws3.dat");
+
         while(currentIteration < iterations){
 
             Random rand = new Random();
-            double lambdaSP1 = simulation.getLambda("servinsp1.dat"); //Inspector 1 serving time
-            double lambdaSP22 = simulation.getLambda("servinsp22.dat"); //Inspector 2 serving time for component 2
-            double lambdaSP23 = simulation.getLambda("servinsp23.dat"); //Inspector 2 serving time for component 3
-
-            double lambdaWs1 = simulation.getLambda("ws1.dat");
-            double lambdaWs2 = simulation.getLambda("ws2.dat");
-            double lambdaWs3 = simulation.getLambda("ws3.dat");
-
             ArrayList<Buffer> inspectorOneBuffers = new ArrayList<>();
-
             ArrayList<Buffer> inspectorTwoBuffers = new ArrayList<>();
 
             Buffer bufferOne = new Buffer(Type.C1); //buffer for inspector one and ws1
@@ -147,11 +143,8 @@ public class Simulation {
             Inspector inspectorTwo = new Inspector(inspectorTwoBuffers, 2, lambdaSP22, lambdaSP23, simulation);
             inspectorTwo.setName("Inspector 2");
 
-
-
             System.out.println("STARTING ITERATION " + currentIteration + ".");
             System.out.println("==============================================================================");
-
 
             inspectorOne.start();
             inspectorTwo.start();
@@ -169,8 +162,6 @@ public class Simulation {
 
 
 
-            currentIteration++;
-
             inspectorOne.interrupt();
             inspectorTwo.interrupt();
 
@@ -178,27 +169,37 @@ public class Simulation {
             workstationTwo.interrupt();
             workstationThree.interrupt();
 
+            System.out.println("Waiting for all programs to terminate...");
             while (inspectorOne.getState() != Thread.State.TERMINATED
                     && inspectorTwo.getState() != Thread.State.TERMINATED
                     && workstationOne.getState() != Thread.State.TERMINATED
                     && workstationTwo.getState() != Thread.State.TERMINATED
                     && workstationThree.getState() != Thread.State.TERMINATED) {
-                System.out.println("Waiting for all programs to terminate...");
             }
+            System.out.println("All programs terminated");
 
             System.out.println("ITERATION " + currentIteration + " COMPLETED, COLLECTING RESULTS.");
             System.out.println("==============================================================================");
 
-            //get results for inspector one
+            //get results for inspectors
             ArrayList<Long> insp1 = simulation.getServinsp1();
+            ArrayList<Long> insp22 = simulation.getServinsp22();
+            ArrayList<Long> insp23 = simulation.getServinsp23();
+
+            //get results for workstations
+            ArrayList<Long> ws1 = simulation.getWs1();
+            ArrayList<Long> ws2 = simulation.getWs2();
+            ArrayList<Long> ws3 = simulation.getWs3();
+
             Long average = 0L;
             for(Long num: insp1){
                 average += num;
             }
-            average = (average / insp1.size()) / 1000000000;
-            System.out.println("The average time for inspector 1 was " + average + " seconds");
-            inspector1Performance.put(currentIteration,average);
+            double avg = (double)(average / (long) insp1.size()) / 1000000000L;
 
+
+            System.out.println("The average inspection time for inspector 1 was " + avg + " seconds");
+            inspector1Performance.put(currentIteration,(long)avg);
 
             try {
                 Thread.sleep(20000);
@@ -207,7 +208,6 @@ public class Simulation {
             }
 
         }
-
 
         System.out.println("SIMULATION FINISHED, GENERATING RESULTS");
         System.out.println("==============================================================================");
@@ -219,5 +219,6 @@ public class Simulation {
             Map.Entry pair = (Map.Entry)it.next();
             System.out.println("iteration " + pair.getKey() + " average time: " + pair.getValue());
         }
+        currentIteration++;
     }
 }
