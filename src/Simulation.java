@@ -92,6 +92,11 @@ public class Simulation {
      * @return
      */
     public double getAverage(ArrayList<Long> array){
+
+        if(array.size() == 0){
+            return 0.0;
+        }
+
         Long average = 0L;
         for(Long num: array){
             average += num;
@@ -105,7 +110,7 @@ public class Simulation {
         Simulation simulation = new Simulation();
         int iterations = 3;
         int currentIteration = 0;
-        int simTimeMinutes = 25; //in minutes
+        int simTimeMinutes = 1; //in minutes
         int simTime = simTimeMinutes * 60000;
 
         //collection for each repetition
@@ -207,8 +212,8 @@ public class Simulation {
             double averageInsp23 = simulation.getAverage(insp23);
 
             double averageWs1 = simulation.getAverage(ws1);
-            double averageWs2 = simulation.getAverage(ws2);
-            double averageWs3 = simulation.getAverage(ws3);
+            //double averageWs2 = simulation.getAverage(ws2);
+            //double averageWs3 = simulation.getAverage(ws3);
 
             System.out.println("The average inspection time for inspector 1 was " + averageInsp1 + " seconds");
             inspector1Performance.put(currentIteration,(long)averageInsp1);

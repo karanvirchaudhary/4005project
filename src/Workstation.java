@@ -22,8 +22,9 @@ public class Workstation extends Thread{
      */
     public void run(){
 
-        long startTime = System.nanoTime();
+
         while (!end){
+            long startTime = System.nanoTime();
             //this is workstation 1
             if(buffer2 == null){
                 Component component = buffer1.take();
@@ -57,17 +58,22 @@ public class Workstation extends Thread{
                 end = true;
                 return;
             }
+
+            long endTime = System.nanoTime();
+            long timeElapsed = endTime - startTime;
+
+            if(ID == 1){
+                simulation.getWs1().add(timeElapsed);
+            } else if(ID == 2){
+                simulation.getWs2().add(timeElapsed);
+            } else {
+                simulation.getWs3().add(timeElapsed);
+            }
+
         }
 
-        long endTime = System.nanoTime();
-        long timeElapsed = endTime - startTime;
-        if(ID == 1){
-            simulation.getWs1().add(timeElapsed);
-        } else if(ID == 2){
-            simulation.getWs2().add(timeElapsed);
-        } else {
-            simulation.getWs3().add(timeElapsed);
-        }
+
+
 
     }
 

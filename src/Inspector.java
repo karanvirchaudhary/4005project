@@ -108,7 +108,7 @@ public class Inspector extends Thread {
                 for(Buffer b: buffer){
                     if(b.getBufferComponentType() == component.getComponentType()){
                         long time = b.put(component);
-
+                        System.out.println("Inspector 2 putting " + component.getComponentType().toString() + " into buffer ");
                         if(time > 0){
                             //simulation.getinspectorTwoBlocked().add(time);
                             blockedTime += time;
@@ -116,7 +116,7 @@ public class Inspector extends Thread {
                         break;
                     }
                 }
-                System.out.println("Inspector 2 putting " + component.getComponentType().toString() + " into buffer ");
+
 
 
             } else {
