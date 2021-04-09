@@ -86,6 +86,19 @@ public class Simulation {
         return ws3;
     }
 
+    /**
+     * Gets the average in a list of timings
+     * @param array
+     * @return
+     */
+    public double getAverage(ArrayList<Long> array){
+        Long average = 0L;
+        for(Long num: array){
+            average += num;
+        }
+        double avg = (double)(average / (long) array.size()) / 1000000000L;
+        return avg;
+    }
 
     public static void main(String[] args) throws FileNotFoundException {
 
@@ -160,8 +173,6 @@ public class Simulation {
                 e.printStackTrace();
             }
 
-
-
             inspectorOne.interrupt();
             inspectorTwo.interrupt();
 
@@ -191,15 +202,17 @@ public class Simulation {
             ArrayList<Long> ws2 = simulation.getWs2();
             ArrayList<Long> ws3 = simulation.getWs3();
 
-            Long average = 0L;
-            for(Long num: insp1){
-                average += num;
-            }
-            double avg = (double)(average / (long) insp1.size()) / 1000000000L;
+            double averageInsp1 = simulation.getAverage(insp1); //gets the average for inspector 1
+            double averageInsp22 = simulation.getAverage(insp22);
+            double averageInsp23 = simulation.getAverage(insp23);
 
+            double averageWs1 = simulation.getAverage(ws1);
+            double averageWs2 = simulation.getAverage(ws2);
+            double averageWs3 = simulation.getAverage(ws3);
 
-            System.out.println("The average inspection time for inspector 1 was " + avg + " seconds");
-            inspector1Performance.put(currentIteration,(long)avg);
+            System.out.println("The average inspection time for inspector 1 was " + averageInsp1 + " seconds");
+            inspector1Performance.put(currentIteration,(long)averageInsp1);
+            inspector2Performance.put(currentIteration, (long)averageInsp22);
 
             try {
                 Thread.sleep(20000);
