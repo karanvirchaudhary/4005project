@@ -181,22 +181,22 @@ public class Simulation {
         Simulation simulation = new Simulation();
         int iterations = 3;
         int currentIteration = 0;
-        int simTimeMinutes = 2; //in minutes
+        int simTimeMinutes = 10; //in minutes
         int simTime = simTimeMinutes * 60000;
 
         //collection for each repetition. They keep track of the average time for each iteration.
-        HashMap<Integer, Long> inspector1Performance = new HashMap<>();
-        HashMap<Integer, Long> inspector2Performance = new HashMap<>();
-        HashMap<Integer, Long> ws1Performance = new HashMap<>();
-        HashMap<Integer, Long> ws2Performance = new HashMap<>();
-        HashMap<Integer, Long> ws3Performance = new HashMap<>();
+        HashMap<Integer, Double> inspector1Performance = new HashMap<>();
+        HashMap<Integer, Double> inspector2Performance = new HashMap<>();
+        HashMap<Integer, Double> ws1Performance = new HashMap<>();
+        HashMap<Integer, Double> ws2Performance = new HashMap<>();
+        HashMap<Integer, Double> ws3Performance = new HashMap<>();
 
         //collection for each repetition. They keep track of the total time for each iteration.
-        HashMap<Integer, Long> inspector1TotalPerformance = new HashMap<>();
-        HashMap<Integer, Long> inspector2TotalPerformance = new HashMap<>();
-        HashMap<Integer, Long> ws1TotalPerformance = new HashMap<>();
-        HashMap<Integer, Long> ws2TotalPerformance = new HashMap<>();
-        HashMap<Integer, Long> ws3TotalPerformance = new HashMap<>();
+        HashMap<Integer, Double> inspector1TotalPerformance = new HashMap<>();
+        HashMap<Integer, Double> inspector2TotalPerformance = new HashMap<>();
+        HashMap<Integer, Double> ws1TotalPerformance = new HashMap<>();
+        HashMap<Integer, Double> ws2TotalPerformance = new HashMap<>();
+        HashMap<Integer, Double> ws3TotalPerformance = new HashMap<>();
 
         //The following collections will be used to keep track of the number of products produced by each workstation in an iteration
         HashMap<Integer, Integer> ws1ProductResults = new HashMap<>();
@@ -332,17 +332,17 @@ public class Simulation {
             System.out.println("Workstation 3: " + "Average Time: " + averageWs3 + " seconds" + "Toys Produced:" + WS3Products);
 
             //Getting the time performance statistics for all 5 entities
-            inspector1Performance.put(currentIteration,(long)averageInsp1);
-            inspector2Performance.put(currentIteration, (long)averageInsp22);
-            ws1Performance.put(currentIteration, (long) averageWs1);
-            ws2Performance.put(currentIteration, (long) averageWs2);
-            ws3Performance.put(currentIteration, (long) averageWs3);
+            inspector1Performance.put(currentIteration,averageInsp1);
+            inspector2Performance.put(currentIteration, averageInsp22);
+            ws1Performance.put(currentIteration,  averageWs1);
+            ws2Performance.put(currentIteration,  averageWs2);
+            ws3Performance.put(currentIteration,  averageWs3);
 
-            inspector1TotalPerformance.put(currentIteration, (long)totalInsp1);
-            inspector2TotalPerformance.put(currentIteration, (long)totalInsp22);
-            ws1TotalPerformance.put(currentIteration, (long) totalWs1);
-            ws2TotalPerformance.put(currentIteration, (long) totalWs2);
-            ws3TotalPerformance.put(currentIteration, (long) totalWs3);
+            inspector1TotalPerformance.put(currentIteration, totalInsp1);
+            inspector2TotalPerformance.put(currentIteration, totalInsp22);
+            ws1TotalPerformance.put(currentIteration,  totalWs1);
+            ws2TotalPerformance.put(currentIteration,  totalWs2);
+            ws3TotalPerformance.put(currentIteration,  totalWs3);
 
             ws1ProductResults.put(currentIteration,(Integer) WS1Products);
             ws2ProductResults.put(currentIteration,(Integer) WS2Products);
