@@ -145,7 +145,7 @@ public class Simulation {
         return total;
     }
 
-    public void printTimeStatistics(HashMap<Integer, Long> performanceMap){
+    public void printTimeStatistics(HashMap<Integer, Double> performanceMap){
         Iterator it = performanceMap.entrySet().iterator();
         Long average = 0L;
         while (it.hasNext()){
@@ -161,17 +161,17 @@ public class Simulation {
         }
         return total;
     }
-    public long getTotalTime(HashMap<Integer, Long> productMap){
-        long total =0;
+    public Double getTotalTime(HashMap<Integer, Double> productMap){
+        Double total = 0D;
         for(Integer i =0; i<productMap.size();i++){
             total = total + productMap.get(i);
             System.out.println("iteration: " + i + " Products Produced: " + total);
         }
         return total;
     }
-    public double calculateThroughput(HashMap<Integer, Integer> productMap, HashMap<Integer, Long>totalMap){
+    public double calculateThroughput(HashMap<Integer, Integer> productMap, HashMap<Integer, Double>totalMap){
         double productTotal = printProductStatistics(productMap);
-        Long totalTime = getTotalTime(totalMap);
+        Double totalTime = getTotalTime(totalMap);
         return productTotal/totalTime;
     }
 
