@@ -421,6 +421,7 @@ public class Simulation {
         simulation.printProductStatistics(ws3ProductResults);
         Integer ws3TotalResult = simulation.getFinalProduction(ws3ProductResults);
         System.out.println("Total products produced: " + ws3TotalResult);
+
         /*
         double ws3Throughput = simulation.calculateThroughput(ws3ProductResults,inspector2TotalPerformance);
         System.out.println("Workstation 3 throughput: " + ws3Throughput);
