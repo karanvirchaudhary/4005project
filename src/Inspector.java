@@ -164,6 +164,7 @@ public class Inspector extends Thread {
             }
 
         }
+
         long endTimeTotal = System.nanoTime();
 
         long total = endTimeTotal - startTimeTotal;
@@ -177,6 +178,12 @@ public class Inspector extends Thread {
         }
     }
 
+
+    /**
+     * Give priority to WS3, then WS2, then WS1
+     * @param array
+     * @return
+     */
     private int getIndexOfMinArray(ArrayList<Integer> array) {
         if (array.size() == 0)
             return -1;
@@ -184,8 +191,9 @@ public class Inspector extends Thread {
         int index = 0;
         int min = array.get(index);
 
-        if(array.get(0) == 0 & array.get(1) ==0 & array.get(2)==0){
-            return 3;
+        if((array.get(0) == 0 & array.get(1) == 0 & array.get(2) == 0) ||
+                (array.get(0) == 1 & array.get(1) == 1 & array.get(2) == 1)){
+            return 2;
         }
 
         for (int i = 0; i < array.size(); i++) {

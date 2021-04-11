@@ -354,6 +354,15 @@ public class Simulation {
                 e.printStackTrace();
             }
             currentIteration++;
+            simulation.getWs1().clear();
+            simulation.getWs2().clear();
+            simulation.getWs3().clear();
+            simulation.getServinsp1().clear();
+            simulation.getServinsp22().clear();
+            simulation.getServinsp23().clear();
+            simulation.getWs1ProductTracker().clear();
+            simulation.getWs2ProductTracker().clear();
+            simulation.getWs3ProductTracker().clear();
         }
 
         System.out.println("SIMULATION FINISHED, GENERATING RESULTS");
@@ -385,6 +394,5 @@ public class Simulation {
         double ws3Throughput = simulation.calculateThroughput(ws3ProductResults,inspector2TotalPerformance);
         System.out.println("Workstation 3 throughput: " + ws3Throughput);
 
-        currentIteration++;
     }
 }
