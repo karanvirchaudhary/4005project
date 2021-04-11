@@ -133,6 +133,7 @@ public class Simulation {
         }
         return total;
     }
+
     public Integer getProduction(ArrayList<Integer> array){
         if(array.size()== 0){
             return 0;
@@ -142,8 +143,8 @@ public class Simulation {
             total += num;
         }
         return total;
-
     }
+
     public void printTimeStatistics(HashMap<Integer, Long> performanceMap){
         Iterator it = performanceMap.entrySet().iterator();
         Long average = 0L;
@@ -180,7 +181,7 @@ public class Simulation {
         Simulation simulation = new Simulation();
         int iterations = 3;
         int currentIteration = 0;
-        int simTimeMinutes = 10; //in minutes
+        int simTimeMinutes = 2; //in minutes
         int simTime = simTimeMinutes * 60000;
 
         //collection for each repetition. They keep track of the average time for each iteration.
@@ -312,13 +313,13 @@ public class Simulation {
 
             //Next we will be retrieving the total amount of products produced by a workstation during that iteration
             ArrayList<Integer> totalWS1Products = simulation.getWs1ProductTracker();
-            Integer WS1Products = simulation.getProduction(totalWS1Products);
+            Integer WS1Products = totalWS1Products.size();
 
             ArrayList<Integer> totalWS2Products = simulation.getWs2ProductTracker();
-            Integer WS2Products = simulation.getProduction(totalWS2Products);
+            Integer WS2Products = totalWS2Products.size();
 
             ArrayList<Integer> totalWS3Products = simulation.getWs3ProductTracker();
-            Integer WS3Products = simulation.getProduction(totalWS3Products);
+            Integer WS3Products = totalWS3Products.size();
 
 
             //Printing out the average time for the 5 entities.
@@ -354,6 +355,7 @@ public class Simulation {
                 e.printStackTrace();
             }
             currentIteration++;
+
             simulation.getWs1().clear();
             simulation.getWs2().clear();
             simulation.getWs3().clear();
