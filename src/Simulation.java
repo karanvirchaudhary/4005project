@@ -129,7 +129,7 @@ public class Simulation {
 
         Long total = 0L;
         for(Long num: array){
-            total += num;
+            total += num/1000000000L;
         }
         return total;
     }
@@ -219,12 +219,12 @@ public class Simulation {
             ArrayList<Buffer> inspectorOneBuffers = new ArrayList<>();
             ArrayList<Buffer> inspectorTwoBuffers = new ArrayList<>();
 
-            Buffer bufferOne = new Buffer(Type.C1); //buffer for inspector one and ws1
-            Buffer bufferOneTwo = new Buffer(Type.C1);
-            Buffer bufferOneThree = new Buffer(Type.C1);
+            Buffer bufferOne = new Buffer(Type.C1, 0); //buffer for inspector one and ws1
+            Buffer bufferOneTwo = new Buffer(Type.C1, 1);
+            Buffer bufferOneThree = new Buffer(Type.C1,2);
 
-            Buffer bufferTwoTwo = new Buffer(Type.C2);
-            Buffer bufferTwoThree = new Buffer(Type.C3);
+            Buffer bufferTwoTwo = new Buffer(Type.C2, 0);
+            Buffer bufferTwoThree = new Buffer(Type.C3,0);
 
             inspectorOneBuffers.add(bufferOne);
             inspectorOneBuffers.add(bufferOneTwo);

@@ -117,8 +117,6 @@ public class Inspector extends Thread {
                     }
                 }
 
-
-
             } else {
 
                 /**
@@ -138,9 +136,12 @@ public class Inspector extends Thread {
                     System.out.print("WS1 \n");
                 } else if (index == 1){
                     System.out.print("WS2 \n");
-                } else {
+                } else if (index ==2){
                     System.out.print("WS3 \n");
+                } else{
+                    System.out.print("There is a tie. Giving component to WS3 \n");
                 }
+
 
                 long time = buffer.get(index).put(component);
                 if(time > 0){
@@ -182,6 +183,10 @@ public class Inspector extends Thread {
 
         int index = 0;
         int min = array.get(index);
+
+        if(array.get(0) == 0 & array.get(1) ==0 & array.get(2)==0){
+            return 3;
+        }
 
         for (int i = 0; i < array.size(); i++) {
             if (array.get(i) < min) {

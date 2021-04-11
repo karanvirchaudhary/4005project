@@ -5,10 +5,12 @@ public class Buffer{
     Stack<Component> components;
     private boolean hasSpace = true;
     private Type bufferType;
+    private int priority; //0 being the lowest and 2 being the highest.
 
-    public Buffer(Type type){
+    public Buffer(Type type, int priority){
         components = new Stack<Component>();
         this.bufferType = type;
+        this.priority = priority;
     }
 
     public synchronized boolean getSpace(){
