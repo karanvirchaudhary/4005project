@@ -129,10 +129,11 @@ public class Simulation {
 
         Long total = 0L;
         for(Long num: array){
-            total += num;
+            total += num/1000000000L;
         }
         return total;
     }
+
     public Integer getProduction(ArrayList<Integer> array){
         if(array.size()== 0){
             return 0;
@@ -142,9 +143,9 @@ public class Simulation {
             total += num;
         }
         return total;
-
     }
-    public void printTimeStatistics(HashMap<Integer, Long> performanceMap){
+
+    public void printTimeStatistics(HashMap<Integer, Double> performanceMap){
         Iterator it = performanceMap.entrySet().iterator();
         Long average = 0L;
         while (it.hasNext()){
@@ -160,17 +161,24 @@ public class Simulation {
         }
         return total;
     }
-    public long getTotalTime(HashMap<Integer, Long> productMap){
-        long total =0;
+    public Double getTotalTime(HashMap<Integer, Double> productMap){
+        Double total = 0D;
         for(Integer i =0; i<productMap.size();i++){
             total = total + productMap.get(i);
             System.out.println("iteration: " + i + " Products Produced: " + total);
         }
         return total;
     }
-    public double calculateThroughput(HashMap<Integer, Integer> productMap, HashMap<Integer, Long>totalMap){
+
+    /**
+     *
+     * @param productMap products produced
+     * @param totalMap total time for production
+     * @return
+     */
+    public double calculateThroughput(HashMap<Integer, Integer> productMap, HashMap<Integer, Double>totalMap){
         double productTotal = printProductStatistics(productMap);
-        Long totalTime = getTotalTime(totalMap);
+        Double totalTime = getTotalTime(totalMap);
         return productTotal/totalTime;
     }
 
@@ -180,22 +188,22 @@ public class Simulation {
         Simulation simulation = new Simulation();
         int iterations = 3;
         int currentIteration = 0;
-        int simTimeMinutes = 10; //in minutes
+        int simTimeMinutes = 2; //in minutes
         int simTime = simTimeMinutes * 60000;
 
         //collection for each repetition. They keep track of the average time for each iteration.
-        HashMap<Integer, Long> inspector1Performance = new HashMap<>();
-        HashMap<Integer, Long> inspector2Performance = new HashMap<>();
-        HashMap<Integer, Long> ws1Performance = new HashMap<>();
-        HashMap<Integer, Long> ws2Performance = new HashMap<>();
-        HashMap<Integer, Long> ws3Performance = new HashMap<>();
+        HashMap<Integer, Double> inspector1Performance = new HashMap<>();
+        HashMap<Integer, Double> inspector2Performance = new HashMap<>();
+        HashMap<Integer, Double> ws1Performance = new HashMap<>();
+        HashMap<Integer, Double> ws2Performance = new HashMap<>();
+        HashMap<Integer, Double> ws3Performance = new HashMap<>();
 
         //collection for each repetition. They keep track of the total time for each iteration.
-        HashMap<Integer, Long> inspector1TotalPerformance = new HashMap<>();
-        HashMap<Integer, Long> inspector2TotalPerformance = new HashMap<>();
-        HashMap<Integer, Long> ws1TotalPerformance = new HashMap<>();
-        HashMap<Integer, Long> ws2TotalPerformance = new HashMap<>();
-        HashMap<Integer, Long> ws3TotalPerformance = new HashMap<>();
+        HashMap<Integer, Double> inspector1TotalPerformance = new HashMap<>();
+        HashMap<Integer, Double> inspector2TotalPerformance = new HashMap<>();
+        HashMap<Integer, Double> ws1TotalPerformance = new HashMap<>();
+        HashMap<Integer, Double> ws2TotalPerformance = new HashMap<>();
+        HashMap<Integer, Double> ws3TotalPerformance = new HashMap<>();
 
         //The following collections will be used to keep track of the number of products produced by each workstation in an iteration
         HashMap<Integer, Integer> ws1ProductResults = new HashMap<>();
@@ -219,12 +227,12 @@ public class Simulation {
             ArrayList<Buffer> inspectorOneBuffers = new ArrayList<>();
             ArrayList<Buffer> inspectorTwoBuffers = new ArrayList<>();
 
-            Buffer bufferOne = new Buffer(Type.C1); //buffer for inspector one and ws1
-            Buffer bufferOneTwo = new Buffer(Type.C1);
-            Buffer bufferOneThree = new Buffer(Type.C1);
+            Buffer bufferOne = new Buffer(Type.C1, 0); //buffer for inspector one and ws1
+            Buffer bufferOneTwo = new Buffer(Type.C1, 1);
+            Buffer bufferOneThree = new Buffer(Type.C1,2);
 
-            Buffer bufferTwoTwo = new Buffer(Type.C2);
-            Buffer bufferTwoThree = new Buffer(Type.C3);
+            Buffer bufferTwoTwo = new Buffer(Type.C2, 0);
+            Buffer bufferTwoThree = new Buffer(Type.C3,0);
 
             inspectorOneBuffers.add(bufferOne);
             inspectorOneBuffers.add(bufferOneTwo);
@@ -312,13 +320,13 @@ public class Simulation {
 
             //Next we will be retrieving the total amount of products produced by a workstation during that iteration
             ArrayList<Integer> totalWS1Products = simulation.getWs1ProductTracker();
-            Integer WS1Products = simulation.getProduction(totalWS1Products);
+            Integer WS1Products = totalWS1Products.size();
 
             ArrayList<Integer> totalWS2Products = simulation.getWs2ProductTracker();
-            Integer WS2Products = simulation.getProduction(totalWS2Products);
+            Integer WS2Products = totalWS2Products.size();
 
             ArrayList<Integer> totalWS3Products = simulation.getWs3ProductTracker();
-            Integer WS3Products = simulation.getProduction(totalWS3Products);
+            Integer WS3Products = totalWS3Products.size();
 
 
             //Printing out the average time for the 5 entities.
@@ -331,21 +339,21 @@ public class Simulation {
             System.out.println("Workstation 3: " + "Average Time: " + averageWs3 + " seconds" + "Toys Produced:" + WS3Products);
 
             //Getting the time performance statistics for all 5 entities
-            inspector1Performance.put(currentIteration,(long)averageInsp1);
-            inspector2Performance.put(currentIteration, (long)averageInsp22);
-            ws1Performance.put(currentIteration, (long) averageWs1);
-            ws2Performance.put(currentIteration, (long) averageWs2);
-            ws3Performance.put(currentIteration, (long) averageWs3);
+            inspector1Performance.put(currentIteration,averageInsp1);
+            inspector2Performance.put(currentIteration, averageInsp22);
+            ws1Performance.put(currentIteration,  averageWs1);
+            ws2Performance.put(currentIteration,  averageWs2);
+            ws3Performance.put(currentIteration,  averageWs3);
 
-            inspector1TotalPerformance.put(currentIteration, (long)totalInsp1);
-            inspector2TotalPerformance.put(currentIteration, (long)totalInsp22);
-            ws1TotalPerformance.put(currentIteration, (long) totalWs1);
-            ws2TotalPerformance.put(currentIteration, (long) totalWs2);
-            ws3TotalPerformance.put(currentIteration, (long) totalWs3);
+            inspector1TotalPerformance.put(currentIteration, totalInsp1);
+            inspector2TotalPerformance.put(currentIteration, totalInsp22);
+            ws1TotalPerformance.put(currentIteration,  totalWs1);
+            ws2TotalPerformance.put(currentIteration,  totalWs2);
+            ws3TotalPerformance.put(currentIteration,  totalWs3);
 
-            ws1ProductResults.put(currentIteration,(Integer) WS1Products);
-            ws2ProductResults.put(currentIteration,(Integer) WS2Products);
-            ws3ProductResults.put(currentIteration,(Integer) WS3Products);
+            ws1ProductResults.put(currentIteration, WS1Products);
+            ws2ProductResults.put(currentIteration, WS2Products);
+            ws3ProductResults.put(currentIteration, WS3Products);
 
 
             try {
@@ -354,6 +362,16 @@ public class Simulation {
                 e.printStackTrace();
             }
             currentIteration++;
+
+            simulation.getWs1().clear();
+            simulation.getWs2().clear();
+            simulation.getWs3().clear();
+            simulation.getServinsp1().clear();
+            simulation.getServinsp22().clear();
+            simulation.getServinsp23().clear();
+            simulation.getWs1ProductTracker().clear();
+            simulation.getWs2ProductTracker().clear();
+            simulation.getWs3ProductTracker().clear();
         }
 
         System.out.println("SIMULATION FINISHED, GENERATING RESULTS");
@@ -385,6 +403,5 @@ public class Simulation {
         double ws3Throughput = simulation.calculateThroughput(ws3ProductResults,inspector2TotalPerformance);
         System.out.println("Workstation 3 throughput: " + ws3Throughput);
 
-        currentIteration++;
     }
 }

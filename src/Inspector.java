@@ -117,8 +117,6 @@ public class Inspector extends Thread {
                     }
                 }
 
-
-
             } else {
 
                 /**
@@ -138,9 +136,12 @@ public class Inspector extends Thread {
                     System.out.print("WS1 \n");
                 } else if (index == 1){
                     System.out.print("WS2 \n");
-                } else {
+                } else if (index ==2){
                     System.out.print("WS3 \n");
+                } else{
+                    System.out.print("There is a tie. Giving component to WS3 \n");
                 }
+
 
                 long time = buffer.get(index).put(component);
                 if(time > 0){
@@ -163,6 +164,7 @@ public class Inspector extends Thread {
             }
 
         }
+
         long endTimeTotal = System.nanoTime();
 
         long total = endTimeTotal - startTimeTotal;
@@ -176,12 +178,23 @@ public class Inspector extends Thread {
         }
     }
 
+
+    /**
+     * Give priority to WS3, then WS2, then WS1
+     * @param array
+     * @return
+     */
     private int getIndexOfMinArray(ArrayList<Integer> array) {
         if (array.size() == 0)
             return -1;
 
         int index = 0;
         int min = array.get(index);
+
+        if((array.get(0) == 0 & array.get(1) == 0 & array.get(2) == 0) ||
+                (array.get(0) == 1 & array.get(1) == 1 & array.get(2) == 1)){
+            return 2;
+        }
 
         for (int i = 0; i < array.size(); i++) {
             if (array.get(i) < min) {
