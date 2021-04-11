@@ -153,14 +153,26 @@ public class Simulation {
             System.out.println("iteration " + pair.getKey() + " average time: " + pair.getValue());
         }
     }
-    public Integer printProductStatistics(HashMap<Integer, Integer> productMap){
+    /*
+    This function will be used to print out the product collection statistics for each workstation.
+     */
+    public void printProductStatistics(HashMap<Integer, Integer> productMap){
+        for(Integer i =0; i<productMap.size();i++){
+            System.out.println("iteration: " + i + " Products Produced: " + productMap.get(i));
+        }
+    }
+
+    /*
+    The following function is used to calculate the total products at the very end of the simulation.
+     */
+    public Integer getFinalProduction(HashMap<Integer, Integer> productMap){
         Integer total =0;
         for(Integer i =0; i<productMap.size();i++){
-            total = total + productMap.get(i);
-            System.out.println("iteration: " + i + " Products Produced: " + total);
+            total = total+ productMap.get(i);
         }
         return total;
     }
+
     public Double getTotalTime(HashMap<Integer, Double> productMap){
         Double total = 0D;
         for(Integer i =0; i<productMap.size();i++){
@@ -177,9 +189,10 @@ public class Simulation {
      * @return
      */
     public double calculateThroughput(HashMap<Integer, Integer> productMap, HashMap<Integer, Double>totalMap){
-        double productTotal = printProductStatistics(productMap);
-        Double totalTime = getTotalTime(totalMap);
-        return productTotal/totalTime;
+        double productTotal = getFinalProduction(productMap);
+        //Double totalTime = getTotalTime(totalMap);
+        System.out.println("---------------------- Printing Throughput ------------");
+        return productTotal;
     }
 
 
@@ -188,7 +201,7 @@ public class Simulation {
         Simulation simulation = new Simulation();
         int iterations = 3;
         int currentIteration = 0;
-        int simTimeMinutes = 2; //in minutes
+        int simTimeMinutes = 1; //in minutes
         int simTime = simTimeMinutes * 60000;
 
         //collection for each repetition. They keep track of the average time for each iteration.
@@ -330,7 +343,7 @@ public class Simulation {
 
 
             //Printing out the average time for the 5 entities.
-            System.out.println("The inspection time for inspector 1 was " + "Avg: "+ averageInsp1 + " seconds " + "Total: "+totalInsp1);
+            System.out.println("The inspection time for inspector 1 was " + "Avg: "+ averageInsp1 + " seconds " + "Total: " + totalInsp1);
             System.out.println("The inspection time for inspector 2 w C2 was " + "Avg: "+ averageInsp22 + " seconds " + "Total: "+totalInsp22);
             System.out.println("The inspection time for inspector 2 w C3 was " + "Avg: "+ averageInsp23 + " seconds " + "Total: "+totalInsp23);
             System.out.println("--------------------------------------------------------------------");
@@ -354,7 +367,6 @@ public class Simulation {
             ws1ProductResults.put(currentIteration, WS1Products);
             ws2ProductResults.put(currentIteration, WS2Products);
             ws3ProductResults.put(currentIteration, WS3Products);
-
 
             try {
                 Thread.sleep(20000);
@@ -384,24 +396,34 @@ public class Simulation {
 
         //Workstation 1
         System.out.println("Workstation 1 Production: ");
-        Integer ws1Final = simulation.printProductStatistics(ws1ProductResults);
-        System.out.println("Total products produced: " + ws1Final);
+        simulation.printProductStatistics(ws1ProductResults);
+        System.out.println(ws1ProductResults.get(0));
+        Integer ws1TotalResult = simulation.getFinalProduction(ws1ProductResults);
+        System.out.println("Total products produced: " + ws1TotalResult);
+
+        /*
         double ws1Throughput = simulation.calculateThroughput(ws1ProductResults,inspector1TotalPerformance);
         System.out.println("Workstation 1 throughput: " + ws1Throughput);
+         */
 
         //Workstation 2
         System.out.println("Workstation 2 Production: ");
-        Integer ws2Final = simulation.printProductStatistics(ws2ProductResults);
-        System.out.println("Total products produced: " + ws2Final);
+        simulation.printProductStatistics(ws2ProductResults);
+        Integer ws2TotalResult = simulation.getFinalProduction(ws2ProductResults);
+        System.out.println("Total products produced: " + ws2TotalResult);
+        /*
         double ws2Throughput = simulation.calculateThroughput(ws2ProductResults,inspector2TotalPerformance);
         System.out.println("Workstation 2 throughput: " + ws2Throughput);
+         */
 
         //Workstation 3
         System.out.println("Workstation 3 Production: ");
-        Integer ws3Final =simulation.printProductStatistics(ws3ProductResults);
-        System.out.println("Total products produced: " + ws3Final);
+        simulation.printProductStatistics(ws3ProductResults);
+        Integer ws3TotalResult = simulation.getFinalProduction(ws3ProductResults);
+        System.out.println("Total products produced: " + ws3TotalResult);
+        /*
         double ws3Throughput = simulation.calculateThroughput(ws3ProductResults,inspector2TotalPerformance);
         System.out.println("Workstation 3 throughput: " + ws3Throughput);
-
+         */
     }
 }
