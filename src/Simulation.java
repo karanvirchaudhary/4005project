@@ -169,6 +169,13 @@ public class Simulation {
         }
         return total;
     }
+
+    /**
+     *
+     * @param productMap products produced
+     * @param totalMap total time for production
+     * @return
+     */
     public double calculateThroughput(HashMap<Integer, Integer> productMap, HashMap<Integer, Double>totalMap){
         double productTotal = printProductStatistics(productMap);
         Double totalTime = getTotalTime(totalMap);
@@ -181,7 +188,7 @@ public class Simulation {
         Simulation simulation = new Simulation();
         int iterations = 3;
         int currentIteration = 0;
-        int simTimeMinutes = 10; //in minutes
+        int simTimeMinutes = 2; //in minutes
         int simTime = simTimeMinutes * 60000;
 
         //collection for each repetition. They keep track of the average time for each iteration.
@@ -344,9 +351,9 @@ public class Simulation {
             ws2TotalPerformance.put(currentIteration,  totalWs2);
             ws3TotalPerformance.put(currentIteration,  totalWs3);
 
-            ws1ProductResults.put(currentIteration,(Integer) WS1Products);
-            ws2ProductResults.put(currentIteration,(Integer) WS2Products);
-            ws3ProductResults.put(currentIteration,(Integer) WS3Products);
+            ws1ProductResults.put(currentIteration, WS1Products);
+            ws2ProductResults.put(currentIteration, WS2Products);
+            ws3ProductResults.put(currentIteration, WS3Products);
 
 
             try {
