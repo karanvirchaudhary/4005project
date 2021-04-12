@@ -81,7 +81,6 @@ public class Workstation extends Thread{
                 System.out.println("In this iteration, WS3 produced "+ countProduct);
                 simulation.getWs3ProductTracker().add(countProduct);
             }
-
         }
     }
 

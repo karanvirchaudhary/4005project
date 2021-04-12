@@ -20,6 +20,7 @@ public class Simulation {
     private  ArrayList<Long> ws2 = new ArrayList<Long>();
     private  ArrayList<Long> ws3 = new ArrayList<Long>();
 
+
     /*
     * Next we are creating a ArrayLists similar to the ones above but to keep track of the number of products produced by each workstation.
     * Index 0 would contain the # of products produced by that workstation during the 1st iteration, and so on.
@@ -28,7 +29,6 @@ public class Simulation {
     private ArrayList<Integer> ws1ProductTracker = new ArrayList<Integer>();
     private  ArrayList<Integer> ws2ProductTracker = new ArrayList<Integer>();
     private  ArrayList<Integer> ws3ProductTracker = new ArrayList<Integer>();
-
 
     public double getExponential(Double lambda) {
 
@@ -105,6 +105,9 @@ public class Simulation {
     public ArrayList<Integer> getWs2ProductTracker() {return ws2ProductTracker;}
     public ArrayList<Integer> getWs3ProductTracker() {return ws3ProductTracker;}
 
+
+
+
     /**
      * Gets the average in a list of timings
      * @param array
@@ -134,20 +137,33 @@ public class Simulation {
         return total;
     }
 
-    public void printTimeStatistics(HashMap<Integer, Double> performanceMap){
-        Iterator it = performanceMap.entrySet().iterator();
+    public void printTimeStatistics(HashMap<Integer, Double> averageMap){
+        Iterator it = averageMap.entrySet().iterator();
         Long average = 0L;
         while (it.hasNext()){
             Map.Entry pair = (Map.Entry)it.next();
             System.out.println("iteration " + pair.getKey() + " average time: " + pair.getValue());
         }
     }
-    public double calculateVariance(ArrayList<Double>array, double mean){
-        double variance = 0;
-        for(double a:array){
-            variance +=(a-mean)*(a-mean);
+    public void printVarianceStats(HashMap<Integer, Double> varianceMap){
+        Iterator it = varianceMap.entrySet().iterator();
+        Long average = 0L;
+        while (it.hasNext()){
+            Map.Entry pair = (Map.Entry)it.next();
+            System.out.println("iteration " + pair.getKey() + " Variance: " + pair.getValue());
         }
-        return variance/(array.size()-1);
+    }
+    public double calculateVariance(ArrayList<Long>array, double mean){
+        if(array.size() != 0) {
+            double variance = 0;
+            for (double a : array) {
+                variance += (a - mean) * (a - mean);
+            }
+            return variance / (array.size() - 1);
+        }else{
+            return 0.0;
+        }
+
     }
 
     /*
@@ -172,15 +188,13 @@ public class Simulation {
 
     /**
      *
-     * @param productMap products produced
-     * @param totalMap total time for production
+     * @param productMap products produce
      * @return
      */
-    public double calculateThroughput(HashMap<Integer, Integer> productMap, HashMap<Integer, Double>totalMap){
+    public double calculateThroughput(HashMap<Integer, Integer> productMap, int simTime){
         double productTotal = getFinalProduction(productMap);
-        //Double totalTime = getTotalTime(totalMap);
         System.out.println("---------------------- Printing Throughput ------------");
-        return productTotal;
+        return productTotal/simTime;
     }
 
     public static void main(String[] args) throws FileNotFoundException {
@@ -207,6 +221,14 @@ public class Simulation {
         HashMap<Integer, Integer> ws1ProductResults = new HashMap<>();
         HashMap<Integer, Integer> ws2ProductResults = new HashMap<>();
         HashMap<Integer, Integer> ws3ProductResults = new HashMap<>();
+
+        //The following collections will be used to keep track of the sample variance of each entity for an iteration
+        HashMap<Integer, Double> ws1VarianceResults = new HashMap<>();
+        HashMap<Integer, Double> ws2VarianceResults = new HashMap<>();
+        HashMap<Integer, Double> ws3VarianceResults = new HashMap<>();
+        HashMap<Integer, Double> insp1VarianceResults = new HashMap<>();
+        HashMap<Integer, Double> insp22VarianceResults = new HashMap<>();
+        HashMap<Integer, Double> insp23VarianceResults = new HashMap<>();
 
         System.out.println("SIMULATION STARTING FOR " + (simTimeMinutes * iterations) + " MINUTES.");
         System.out.println("==============================================================================");
@@ -306,6 +328,19 @@ public class Simulation {
             double averageWs2 = simulation.getAverage(ws2);
             double averageWs3 = simulation.getAverage(ws3);
 
+            double varianceWs1 = simulation.calculateVariance(ws1, averageWs1);
+            System.out.println("WS1 VARIANCE IS: " + varianceWs1);
+            double varianceWs2 = simulation.calculateVariance(ws2, averageWs2);
+            System.out.println("WS2 VARIANCE IS: " + varianceWs2);
+            double varianceWs3 = simulation.calculateVariance(ws3, averageWs3);
+            System.out.println("WS3 VARIANCE IS: " + varianceWs3);
+            double varianceInsp1 = simulation.calculateVariance(insp1, averageInsp1);
+            System.out.println("INSP1 VARIANCE IS: " + varianceInsp1);
+            double varianceInsp22 = simulation.calculateVariance(insp22, averageInsp22);
+            System.out.println("INSP1 VARIANCE IS: " + varianceInsp22);
+            double varianceInsp23 = simulation.calculateVariance(insp23, averageInsp23);
+            System.out.println("INSP1 VARIANCE IS: " + varianceInsp23);
+
 
             //Next we will be retrieving the total amount of products produced by a workstation during that iteration
             ArrayList<Integer> totalWS1Products = simulation.getWs1ProductTracker();
@@ -326,7 +361,8 @@ public class Simulation {
             System.out.println("Workstation 2: " + "Average Time: " + averageWs2 + " seconds" + "Toys Produced:" + WS2Products);
             System.out.println("Workstation 3: " + "Average Time: " + averageWs3 + " seconds" + "Toys Produced:" + WS3Products);
 
-            //Getting the time performance statistics for all 5 entities
+            //Storing this iteration's data into the hashmap. The Hashmap will be used to print out
+            //the final set of statistics at the end of the simulation.
             inspector1Performance.put(currentIteration,averageInsp1);
             inspector2Performance.put(currentIteration, averageInsp22);
             inspector23Performance.put(currentIteration, averageInsp23);
@@ -338,9 +374,17 @@ public class Simulation {
             ws2ProductResults.put(currentIteration, WS2Products);
             ws3ProductResults.put(currentIteration, WS3Products);
 
+            ws1VarianceResults.put(currentIteration, varianceWs1);
+            ws2VarianceResults.put(currentIteration, varianceWs2);
+            ws3VarianceResults.put(currentIteration, varianceWs3);
+            insp1VarianceResults.put(currentIteration, varianceInsp1);
+            insp22VarianceResults.put(currentIteration, varianceInsp22);
+            insp23VarianceResults.put(currentIteration, varianceInsp23);
+
+            /*
             inspector1Blocked.put(currentIteration, simulation.getAverage(simulation.getinspectorOneBlocked()));
             inspector2Blocked.put(currentIteration, simulation.getAverage(simulation.getinspectorTwoBlocked()));
-
+*/
             try {
                 Thread.sleep(20000);
             } catch (InterruptedException e) {
@@ -364,11 +408,13 @@ public class Simulation {
 
         System.out.println("Inspector one work time: ");
         simulation.printTimeStatistics(inspector1Performance);
+        simulation.printVarianceStats(insp1VarianceResults);
         System.out.println("Inspector two with C2 work time: ");
         simulation.printTimeStatistics(inspector2Performance);
+        simulation.printVarianceStats(insp22VarianceResults);
         System.out.println("Inspector two with C3 work time: ");
         simulation.printTimeStatistics(inspector23Performance);
-
+        simulation.printVarianceStats(insp23VarianceResults);
 
         //Workstation 1
         System.out.println("Workstation 1 Production: ");
@@ -376,31 +422,31 @@ public class Simulation {
         System.out.println(ws1ProductResults.get(0));
         Integer ws1TotalResult = simulation.getFinalProduction(ws1ProductResults);
         System.out.println("Total products produced: " + ws1TotalResult);
+        simulation.printVarianceStats(ws1VarianceResults);
 
-        /*
-        double ws1Throughput = simulation.calculateThroughput(ws1ProductResults,inspector1TotalPerformance);
+        double ws1Throughput = simulation.calculateThroughput(ws1ProductResults,simTime);
         System.out.println("Workstation 1 throughput: " + ws1Throughput);
-         */
+
 
         //Workstation 2
         System.out.println("Workstation 2 Production: ");
         simulation.printProductStatistics(ws2ProductResults);
         Integer ws2TotalResult = simulation.getFinalProduction(ws2ProductResults);
         System.out.println("Total products produced: " + ws2TotalResult);
-        /*
-        double ws2Throughput = simulation.calculateThroughput(ws2ProductResults,inspector2TotalPerformance);
+        simulation.printVarianceStats(ws2VarianceResults);
+
+        double ws2Throughput = simulation.calculateThroughput(ws2ProductResults,simTime);
         System.out.println("Workstation 2 throughput: " + ws2Throughput);
-         */
 
         //Workstation 3
         System.out.println("Workstation 3 Production: ");
         simulation.printProductStatistics(ws3ProductResults);
         Integer ws3TotalResult = simulation.getFinalProduction(ws3ProductResults);
         System.out.println("Total products produced: " + ws3TotalResult);
+        simulation.printVarianceStats(ws1VarianceResults);
 
-        /*
-        double ws3Throughput = simulation.calculateThroughput(ws3ProductResults,inspector2TotalPerformance);
+        double ws3Throughput = simulation.calculateThroughput(ws3ProductResults,simTime);
         System.out.println("Workstation 3 throughput: " + ws3Throughput);
-         */
+
     }
 }
