@@ -34,8 +34,8 @@ public class Buffer{
     public synchronized long put(Component component){
 
         //if its not full
-        long time = 0;
-        long start = 0;
+        long time = 0L;
+        long start = 0L;
         while (components.size() == 2){
 
             try {
@@ -44,6 +44,7 @@ public class Buffer{
                 time = System.nanoTime() - start;
             } catch (InterruptedException e) {
                 //e.printStackTrace();
+                time = System.nanoTime() - start;
                 System.out.println("Process interrupted");
                 return 0;
             }

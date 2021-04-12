@@ -188,12 +188,15 @@ public class Simulation {
         Simulation simulation = new Simulation();
         int iterations = 3;
         int currentIteration = 0;
-        int simTimeMinutes = 5; //in minutes
+        int simTimeMinutes = 10; //in minutes
         int simTime = simTimeMinutes * 60000;
 
         //collection for each repetition. They keep track of the average time for each iteration.
         HashMap<Integer, Double> inspector1Performance = new HashMap<>();
         HashMap<Integer, Double> inspector2Performance = new HashMap<>();
+
+        HashMap<Integer, Double> inspector1Blocked = new HashMap<>();
+        HashMap<Integer, Double> inspector2Blocked = new HashMap<>();
         HashMap<Integer, Double> inspector23Performance = new HashMap<>();
 
         HashMap<Integer, Double> ws1Performance = new HashMap<>();
@@ -304,7 +307,6 @@ public class Simulation {
             double averageWs3 = simulation.getAverage(ws3);
 
 
-
             //Next we will be retrieving the total amount of products produced by a workstation during that iteration
             ArrayList<Integer> totalWS1Products = simulation.getWs1ProductTracker();
             Integer WS1Products = totalWS1Products.size();
@@ -314,7 +316,6 @@ public class Simulation {
 
             ArrayList<Integer> totalWS3Products = simulation.getWs3ProductTracker();
             Integer WS3Products = totalWS3Products.size();
-
 
             //Printing out the average time for the 5 entities.
             System.out.println("The inspection time for inspector 1 was " + "Avg: "+ averageInsp1 + " seconds " );
@@ -336,6 +337,9 @@ public class Simulation {
             ws1ProductResults.put(currentIteration, WS1Products);
             ws2ProductResults.put(currentIteration, WS2Products);
             ws3ProductResults.put(currentIteration, WS3Products);
+
+            inspector1Blocked.put(currentIteration, simulation.getAverage(simulation.getinspectorOneBlocked()));
+            inspector2Blocked.put(currentIteration, simulation.getAverage(simulation.getinspectorTwoBlocked()));
 
             try {
                 Thread.sleep(20000);

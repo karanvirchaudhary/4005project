@@ -61,7 +61,7 @@ public class Inspector extends Thread {
 
         long startTimeTotal = System.nanoTime();
 
-        while (!end) {
+        while (!isInterrupted()) {
             long startTime = System.nanoTime();
             //generating its own components
             if (ID == 1) { //only for inspector 1
@@ -88,6 +88,8 @@ public class Inspector extends Thread {
                 System.out.println("Error");
             }
 
+            long testTime = System.nanoTime();
+
             try {
                 Thread.sleep((long) sleepTime * 1000); //here to change scale
             } catch (InterruptedException e) {
@@ -95,6 +97,10 @@ public class Inspector extends Thread {
                 end = true;
                 break;
             }
+
+            long endTest = System.nanoTime();
+
+            long totalT = endTest - testTime;
 
             if (ID != 1) {
                 //specifically for Inspector 2
@@ -166,7 +172,7 @@ public class Inspector extends Thread {
 
         long total = endTimeTotal - startTimeTotal;
 
-        double proportion = (double) (blockedTime / total);
+        //double proportion = (double) (blockedTime / total);
 
         if(ID == 1){
             simulation.getinspectorOneBlocked().add(blockedTime);
@@ -196,8 +202,4 @@ public class Inspector extends Thread {
         }
         return index;
     }
-
-
-
-
 }
