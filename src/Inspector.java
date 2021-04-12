@@ -148,7 +148,6 @@ public class Inspector extends Thread {
                     System.out.print("There is a tie. Giving component to WS3 \n");
                 }
 
-
                 long time = buffer.get(index).put(component);
                 if(time > 0){
                     //simulation.getinspectorOneBlocked().add(time);

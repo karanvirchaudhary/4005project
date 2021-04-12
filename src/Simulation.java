@@ -157,7 +157,7 @@ public class Simulation {
         if(array.size() != 0) {
             double variance = 0;
             for (double a : array) {
-                variance += (a - mean) * (a - mean);
+                variance += (a/1000000000 - mean) * (a/1000000000 - mean);
             }
             return variance / (array.size() - 1);
         }else{
@@ -202,7 +202,7 @@ public class Simulation {
         Simulation simulation = new Simulation();
         int iterations = 3;
         int currentIteration = 0;
-        int simTimeMinutes = 5; //in minutes
+        int simTimeMinutes = 7; //in minutes
         int simTime = simTimeMinutes * 60000;
 
         //collection for each repetition. They keep track of the average time for each iteration.
