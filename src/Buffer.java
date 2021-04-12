@@ -46,7 +46,7 @@ public class Buffer{
                 //e.printStackTrace();
                 time = System.nanoTime() - start;
                 System.out.println("Process interrupted");
-                return 0;
+                return time;
             }
         }
         components.add(component);
