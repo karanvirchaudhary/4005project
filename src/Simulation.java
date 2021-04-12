@@ -142,6 +142,14 @@ public class Simulation {
             System.out.println("iteration " + pair.getKey() + " average time: " + pair.getValue());
         }
     }
+    public double calculateVariance(ArrayList<Double>array, double mean){
+        double variance = 0;
+        for(double a:array){
+            variance +=(a-mean)*(a-mean);
+        }
+        return variance/(array.size()-1);
+    }
+
     /*
     This function will be used to print out the product collection statistics for each workstation.
      */
