@@ -154,16 +154,22 @@ public class Simulation {
         }
     }
     public double calculateVariance(ArrayList<Long>array, double mean){
+
+
+
+
         if(array.size() != 0) {
             double variance = 0;
             for (double a : array) {
-                variance += (a/1000000000 - mean) * (a/1000000000 - mean);
+                variance += Math.pow((a/1000000000 - mean),2);
             }
+
+            variance /= (array.size());
+
             return variance / (array.size() - 1);
         }else{
             return 0.0;
         }
-
     }
 
     /*
@@ -179,6 +185,7 @@ public class Simulation {
     The following function is used to calculate the total products at the very end of the simulation.
      */
     public Integer getFinalProduction(HashMap<Integer, Integer> productMap){
+
         Integer total =0;
         for(Integer i =0; i<productMap.size();i++){
             total = total+ productMap.get(i);
@@ -200,9 +207,9 @@ public class Simulation {
     public static void main(String[] args) throws FileNotFoundException {
 
         Simulation simulation = new Simulation();
-        int iterations = 3;
+        int iterations = 1;
         int currentIteration = 0;
-        int simTimeMinutes = 7; //in minutes
+        int simTimeMinutes = 10; //in minutes
         int simTime = simTimeMinutes * 60000;
 
         //collection for each repetition. They keep track of the average time for each iteration.
@@ -388,10 +395,10 @@ public class Simulation {
             insp22VarianceResults.put(currentIteration, varianceInsp22);
             insp23VarianceResults.put(currentIteration, varianceInsp23);
 
-            /*
+
             inspector1Blocked.put(currentIteration, simulation.getAverage(simulation.getinspectorOneBlocked()));
             inspector2Blocked.put(currentIteration, simulation.getAverage(simulation.getinspectorTwoBlocked()));
-*/
+
             try {
                 Thread.sleep(20000);
             } catch (InterruptedException e) {

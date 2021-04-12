@@ -199,10 +199,12 @@ public class Inspector extends Thread {
         int index = 0;
         int min = array.get(index);
 
+        /*
         if((array.get(0) == 0 & array.get(1) == 0 & array.get(2) == 0) ||
                 (array.get(0) == 1 & array.get(1) == 1 & array.get(2) == 1)) {
             return 2;
         }
+         */
 
         for (int i = 0; i < array.size(); i++) {
             if (array.get(i) < min) {
