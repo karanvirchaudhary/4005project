@@ -1,7 +1,7 @@
 public class Workstation extends Thread{
     private Buffer buffer1;
     private Buffer buffer2;
-    private int countProduct;
+    private Integer countProduct =0; //a counter that keeps track of the # products produced by a workstation.
     private int ID;
     private Simulation simulation;
     private double lambda;
@@ -14,6 +14,9 @@ public class Workstation extends Thread{
         this.lambda = lambda;
         this.ID = id;
     }
+    public Integer getCountProduct(){
+        return countProduct;
+    }
 
     /**
      * For WS1: Take right away
@@ -22,8 +25,9 @@ public class Workstation extends Thread{
      */
     public void run(){
 
-        long startTime = System.nanoTime();
-        while (!end){
+
+        while (!isInterrupted() || !end){
+            long startTime = System.nanoTime();
             //this is workstation 1
             if(buffer2 == null){
                 Component component = buffer1.take();
@@ -57,18 +61,27 @@ public class Workstation extends Thread{
                 end = true;
                 return;
             }
-        }
 
-        long endTime = System.nanoTime();
-        long timeElapsed = endTime - startTime;
-        if(ID == 1){
-            simulation.getWs1().add(timeElapsed);
-        } else if(ID == 2){
-            simulation.getWs2().add(timeElapsed);
-        } else {
-            simulation.getWs3().add(timeElapsed);
-        }
+            long endTime = System.nanoTime();
+            long timeElapsed = endTime - startTime;
 
+            if(ID == 1){
+                simulation.getWs1().add(timeElapsed);
+                countProduct = countProduct + 1;
+                System.out.println("In this iteration, WS1 produced " + countProduct);
+                simulation.getWs1ProductTracker().add(countProduct);
+            } else if(ID == 2){
+                simulation.getWs2().add(timeElapsed);
+                countProduct = countProduct + 1;
+                System.out.println("In this iteration, WS2 produced "+ countProduct);
+                simulation.getWs2ProductTracker().add(countProduct);
+            } else {
+                simulation.getWs3().add(timeElapsed);
+                countProduct = countProduct + 1;
+                System.out.println("In this iteration, WS3 produced "+ countProduct);
+                simulation.getWs3ProductTracker().add(countProduct);
+            }
+        }
     }
 
 
