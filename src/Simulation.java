@@ -202,7 +202,7 @@ public class Simulation {
         Simulation simulation = new Simulation();
         int iterations = 3;
         int currentIteration = 0;
-        int simTimeMinutes = 10; //in minutes
+        int simTimeMinutes = 5; //in minutes
         int simTime = simTimeMinutes * 60000;
 
         //collection for each repetition. They keep track of the average time for each iteration.
@@ -293,9 +293,16 @@ public class Simulation {
             inspectorOne.interrupt();
             inspectorTwo.interrupt();
 
+            inspectorOne.setEnd(true);
+            inspectorTwo.setEnd(true);
+
             workstationOne.interrupt();
             workstationTwo.interrupt();
             workstationThree.interrupt();
+
+            workstationOne.setEnd(true);
+            workstationTwo.setEnd(true);
+            workstationThree.setEnd(true);
 
             System.out.println("Waiting for all programs to terminate...");
             while (inspectorOne.getState() != Thread.State.TERMINATED

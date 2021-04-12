@@ -61,7 +61,7 @@ public class Inspector extends Thread {
 
         long startTimeTotal = System.nanoTime();
 
-        while (!isInterrupted()) {
+        while (!isInterrupted() || !end) {
             long startTime = System.nanoTime();
             //generating its own components
             if (ID == 1) { //only for inspector 1
@@ -155,6 +155,10 @@ public class Inspector extends Thread {
                     blockedTime += time;
                 }
 
+            }
+
+            if(end){
+                break;
             }
 
             long endTime = System.nanoTime();

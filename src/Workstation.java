@@ -26,7 +26,7 @@ public class Workstation extends Thread{
     public void run(){
 
 
-        while (!isInterrupted()){
+        while (!isInterrupted() || !end){
             long startTime = System.nanoTime();
             //this is workstation 1
             if(buffer2 == null){
