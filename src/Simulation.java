@@ -207,16 +207,11 @@ public class Simulation {
         //collection for each repetition. They keep track of the average time for each iteration.
         HashMap<Integer, Double> inspector1Performance = new HashMap<>();
         HashMap<Integer, Double> inspector2Performance = new HashMap<>();
+        HashMap<Integer, Double> inspector23Performance = new HashMap<>();
+
         HashMap<Integer, Double> ws1Performance = new HashMap<>();
         HashMap<Integer, Double> ws2Performance = new HashMap<>();
         HashMap<Integer, Double> ws3Performance = new HashMap<>();
-
-        //collection for each repetition. They keep track of the total time for each iteration.
-        HashMap<Integer, Double> inspector1TotalPerformance = new HashMap<>();
-        HashMap<Integer, Double> inspector2TotalPerformance = new HashMap<>();
-        HashMap<Integer, Double> ws1TotalPerformance = new HashMap<>();
-        HashMap<Integer, Double> ws2TotalPerformance = new HashMap<>();
-        HashMap<Integer, Double> ws3TotalPerformance = new HashMap<>();
 
         //The following collections will be used to keep track of the number of products produced by each workstation in an iteration
         HashMap<Integer, Integer> ws1ProductResults = new HashMap<>();
@@ -321,14 +316,6 @@ public class Simulation {
             double averageWs2 = simulation.getAverage(ws2);
             double averageWs3 = simulation.getAverage(ws3);
 
-            double totalInsp1 = simulation.getTotal(insp1);
-            double totalInsp22 = simulation.getTotal(insp22);
-            double totalInsp23 = simulation.getTotal(insp23);
-
-            double totalWs1 = simulation.getTotal(ws1);
-            double totalWs2 = simulation.getTotal(ws2);
-            double totalWs3 = simulation.getTotal(ws3);
-            System.out.println(totalInsp1);
 
 
             //Next we will be retrieving the total amount of products produced by a workstation during that iteration
@@ -343,9 +330,9 @@ public class Simulation {
 
 
             //Printing out the average time for the 5 entities.
-            System.out.println("The inspection time for inspector 1 was " + "Avg: "+ averageInsp1 + " seconds " + "Total: " + totalInsp1);
-            System.out.println("The inspection time for inspector 2 w C2 was " + "Avg: "+ averageInsp22 + " seconds " + "Total: "+totalInsp22);
-            System.out.println("The inspection time for inspector 2 w C3 was " + "Avg: "+ averageInsp23 + " seconds " + "Total: "+totalInsp23);
+            System.out.println("The inspection time for inspector 1 was " + "Avg: "+ averageInsp1 + " seconds " );
+            System.out.println("The inspection time for inspector 2 w C2 was " + "Avg: "+ averageInsp22 + " seconds ");
+            System.out.println("The inspection time for inspector 2 w C3 was " + "Avg: "+ averageInsp23 + " seconds ");
             System.out.println("--------------------------------------------------------------------");
             System.out.println("Workstation 1: " + "Average Time: " + averageWs1 + " seconds" + "Toys Produced:" + WS1Products);
             System.out.println("Workstation 2: " + "Average Time: " + averageWs2 + " seconds" + "Toys Produced:" + WS2Products);
@@ -354,15 +341,10 @@ public class Simulation {
             //Getting the time performance statistics for all 5 entities
             inspector1Performance.put(currentIteration,averageInsp1);
             inspector2Performance.put(currentIteration, averageInsp22);
+            inspector23Performance.put(currentIteration, averageInsp23);
             ws1Performance.put(currentIteration,  averageWs1);
             ws2Performance.put(currentIteration,  averageWs2);
             ws3Performance.put(currentIteration,  averageWs3);
-
-            inspector1TotalPerformance.put(currentIteration, totalInsp1);
-            inspector2TotalPerformance.put(currentIteration, totalInsp22);
-            ws1TotalPerformance.put(currentIteration,  totalWs1);
-            ws2TotalPerformance.put(currentIteration,  totalWs2);
-            ws3TotalPerformance.put(currentIteration,  totalWs3);
 
             ws1ProductResults.put(currentIteration, WS1Products);
             ws2ProductResults.put(currentIteration, WS2Products);
