@@ -134,17 +134,6 @@ public class Simulation {
         return total;
     }
 
-    public Integer getProduction(ArrayList<Integer> array){
-        if(array.size()== 0){
-            return 0;
-        }
-        Integer total =0;
-        for(Integer num: array){
-            total += num;
-        }
-        return total;
-    }
-
     public void printTimeStatistics(HashMap<Integer, Double> performanceMap){
         Iterator it = performanceMap.entrySet().iterator();
         Long average = 0L;
@@ -173,15 +162,6 @@ public class Simulation {
         return total;
     }
 
-    public Double getTotalTime(HashMap<Integer, Double> productMap){
-        Double total = 0D;
-        for(Integer i =0; i<productMap.size();i++){
-            total = total + productMap.get(i);
-            System.out.println("iteration: " + i + " Products Produced: " + total);
-        }
-        return total;
-    }
-
     /**
      *
      * @param productMap products produced
@@ -195,13 +175,12 @@ public class Simulation {
         return productTotal;
     }
 
-
     public static void main(String[] args) throws FileNotFoundException {
 
         Simulation simulation = new Simulation();
         int iterations = 3;
         int currentIteration = 0;
-        int simTimeMinutes = 1; //in minutes
+        int simTimeMinutes = 5; //in minutes
         int simTime = simTimeMinutes * 60000;
 
         //collection for each repetition. They keep track of the average time for each iteration.
@@ -373,8 +352,11 @@ public class Simulation {
 
         System.out.println("Inspector one work time: ");
         simulation.printTimeStatistics(inspector1Performance);
-        System.out.println("Inspector two work time: ");
+        System.out.println("Inspector two with C2 work time: ");
         simulation.printTimeStatistics(inspector2Performance);
+        System.out.println("Inspector two with C3 work time: ");
+        simulation.printTimeStatistics(inspector23Performance);
+
 
         //Workstation 1
         System.out.println("Workstation 1 Production: ");
